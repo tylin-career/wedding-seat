@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>林鼎元 ♥ 陳蓓蓓 婚宴尋座</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#B3304A; --red-deep:#8C2238; --gold:#B98A2F; --gold-soft:#D9BC7A;
+  --cream:#FBF6EE; --card:#FFFFFF; --ink:#3D3229; --muted:#8C7F70; --line:#E8DCC8;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:'Noto Sans TC',system-ui,sans-serif;background:var(--cream);color:var(--ink);
+  background-image:radial-gradient(circle at 12% 8%, rgba(185,138,47,.07) 0 140px, transparent 140px),
+                   radial-gradient(circle at 88% 92%, rgba(179,48,74,.06) 0 160px, transparent 160px);}
+.wrap{max-width:520px;margin:0 auto;padding:28px 20px 40px;min-height:100%;display:flex;flex-direction:column}
+.serif{font-family:'Noto Serif TC',serif}
+/* ---------- landing ---------- */
+.hero{text-align:center;margin:8px 0 26px}
+.hero .date{letter-spacing:.35em;font-size:13px;color:var(--gold);font-weight:500;text-indent:.35em}
+.hero h1{font-size:34px;font-weight:700;color:var(--red-deep);margin:10px 0 6px;letter-spacing:.06em}
+.hero h1 .amp{color:var(--gold);font-size:22px;margin:0 10px;font-weight:500}
+.hero .venue{font-size:14px;color:var(--muted);letter-spacing:.12em}
+.hero .divider{display:flex;align-items:center;gap:12px;margin:18px auto 0;max-width:300px}
+.hero .divider::before,.hero .divider::after{content:"";flex:1;height:1px;background:var(--line)}
+.hero .divider span{color:var(--gold);font-size:15px}
+.lead{text-align:center;font-size:16px;margin:0 0 14px;color:var(--ink);font-weight:500}
+.searchbox{position:relative}
+.searchbox input{width:100%;font-size:18px;padding:15px 18px 15px 48px;border:1.5px solid var(--line);
+  border-radius:14px;background:var(--card);color:var(--ink);outline:none;font-family:inherit;
+  box-shadow:0 2px 10px rgba(140,34,56,.05)}
+.searchbox input:focus{border-color:var(--gold-soft)}
+.searchbox .icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:20px;height:20px;color:var(--muted)}
+.hint{font-size:13px;color:var(--muted);text-align:center;margin-top:10px}
+.sugg{margin-top:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  box-shadow:0 6px 20px rgba(61,50,41,.07);display:none}
+.sugg.show{display:block}
+.sugg button{display:flex;justify-content:space-between;align-items:center;width:100%;padding:13px 16px;
+  border:none;background:none;font-family:inherit;font-size:16px;color:var(--ink);cursor:pointer;text-align:left}
+.sugg button + button{border-top:1px solid #F3EBDD}
+.sugg button:active{background:#FAF3E6}
+.sugg .who{font-weight:500}
+.sugg .where{font-size:13px;color:var(--muted);white-space:nowrap;margin-left:12px}
+.sugg .none{padding:14px 16px;font-size:14px;color:var(--muted)}
+.linebar{margin-top:auto;padding-top:30px;text-align:center}
+.linebtn{display:inline-flex;align-items:center;gap:8px;background:#06C755;color:#fff;font-weight:500;
+  font-size:15px;padding:11px 22px;border-radius:999px;text-decoration:none;box-shadow:0 3px 10px rgba(6,199,85,.25)}
+.foot{margin-top:14px;font-size:12px;color:var(--muted);text-align:center;line-height:1.7}
+/* ---------- result ---------- */
+.back{display:inline-flex;align-items:center;gap:6px;border:none;background:none;color:var(--muted);
+  font-size:14px;font-family:inherit;cursor:pointer;padding:4px 0;margin-bottom:6px}
+.resCard{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 22px;text-align:center;
+  box-shadow:0 6px 24px rgba(61,50,41,.07)}
+.resCard .greet{font-size:15px;color:var(--muted)}
+.resCard .greet b{color:var(--ink);font-weight:700;font-size:17px}
+.resCard .tableNo{font-size:40px;font-weight:700;color:var(--red-deep);margin:6px 0 2px;letter-spacing:.04em}
+.resCard .tableName{display:inline-block;font-size:14px;color:var(--gold);border:1px solid var(--gold-soft);
+  border-radius:999px;padding:3px 14px;margin-top:2px}
+.resCard .walk{font-size:13px;color:var(--muted);margin-top:10px}
+.mapBox{margin-top:14px;background:#FFFDF8;border:1px solid var(--line);border-radius:18px;overflow:hidden;
+  box-shadow:0 6px 24px rgba(61,50,41,.07);position:relative}
+.mapBox svg{display:block;width:100%;height:auto;touch-action:none;user-select:none}
+.maphint{position:absolute;left:0;right:0;bottom:8px;text-align:center;font-size:11px;color:#B5A890;pointer-events:none}
+.ctrls{display:flex;gap:10px;margin-top:14px}
+.ctrls button{flex:1;font-family:inherit;font-size:15px;font-weight:500;padding:12px 0;border-radius:12px;cursor:pointer}
+.btnPrimary{background:var(--red);color:#fff;border:none;box-shadow:0 3px 10px rgba(179,48,74,.25)}
+.btnGhost{background:var(--card);color:var(--ink);border:1.5px solid var(--line)}
+.note{font-size:12px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.7}
+.view{display:none}
+.view.active{display:flex;flex-direction:column;flex:1}
+@media (min-width:560px){ .hero h1{font-size:40px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ============ 搜尋頁 ============ -->
+<div class="view active" id="viewSearch">
+  <div class="hero">
+    <div class="date">2026 · 07 · 18</div>
+    <h1 class="serif">林鼎元<span class="amp serif">&</span>陳蓓蓓</h1>
+    <div class="venue">台北士林萬麗酒店 · 宴會廳</div>
+    <div class="divider"><span>❀</span></div>
+  </div>
+  <p class="lead serif">歡迎蒞臨，請輸入大名為您帶位</p>
+  <div class="searchbox">
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="q" type="text" inputmode="text" autocomplete="off" placeholder="請輸入您的大名" aria-label="輸入姓名搜尋座位">
+  </div>
+  <div class="sugg" id="sugg" role="listbox"></div>
+  <p class="hint">輸入部分姓名即可，也可輸入桌號或桌名</p>
+  <div class="linebar">
+    <a class="linebtn" id="lineBtn" href="#" target="_blank" rel="noopener" style="display:none">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.64 2 10.13c0 4.03 3.55 7.4 8.34 8.04.33.07.77.22.88.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1 .88.55 1.08-.46 5.84-3.44 7.97-5.89C21.42 13.5 22 11.9 22 10.13 22 5.64 17.52 2 12 2z"/></svg>
+      加入婚禮官方 LINE
+    </a>
+    <p class="foot">找不到您的名字嗎？請洽入口收禮桌服務人員<br>林鼎元 · 陳蓓蓓 敬上</p>
+  </div>
+</div>
+
+<!-- ============ 結果頁 ============ -->
+<div class="view" id="viewResult">
+  <button class="back" id="backBtn">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+    重新搜尋
+  </button>
+  <div class="resCard">
+    <div class="greet" id="greet"></div>
+    <div class="tableNo serif" id="tableNo"></div>
+    <div class="tableName" id="tableName"></div>
+    <div class="walk" id="walkInfo"></div>
+  </div>
+  <div class="mapBox">
+    <svg id="map" viewBox="58 245 504 262" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="宴會廳平面圖與前往座位的路線"></svg>
+  </div>
+  <div class="ctrls">
+    <button class="btnPrimary" id="replayBtn">▶ 重播路線</button>
+    <button class="btnGhost" id="fullBtn">查看全圖</button>
+  </div>
+  <p class="note">入場後沿動畫路線前進即可抵達 · 可用雙指縮放地圖</p>
+</div>
+
+</div>
+
+<script>
+/* ================= 設定 ================= */
+const CONFIG = {
+  lineUrl: "https://lin.ee/TLSvVsS",   // 婚禮官方 LINE 連結，留空則隱藏按鈕
+  mPerPt: 0.0858             // PDF pt → 公尺（依舞台 732cm 長邊與 180cm 標準圓桌驗證）
+};
+
+/* ================= 名單資料 ================= */
+const TABLES = [{"no":1,"name":"主桌","guests":["新郎","新娘","新郎爸爸","新郎媽媽","新娘爸爸","新娘媽媽","新郎舅舅","新郎乾爹陳聰裕","新郎乾媽張瓊瑤","新娘外婆","新娘二伯陳炳藝"]},{"no":2,"name":"1+4","guests":["陳世穎","吳昭儀","陳恩菲（孩）","陳綺恩（孩）","陳世諺","陳昱璇","蔡坤宏","張淑俐","阿隆","阿隆媽"]},{"no":3,"name":"3+5","guests":["張錦勳","張錫媛","張令妮","張阿紫","絡腳","張滿理","蔡建華","尚善閔","尚廷禹","呂潔瑜","新郎外婆"]},{"no":5,"name":"7+男方家人","guests":["嫂爸","嫂媽","嫂妹","嫂妹男友","嫂嫂外婆","哥哥","嫂嫂","張詠涵","張宸翌"]},{"no":6,"name":"6+沛森+宏益","guests":["陳秀梅","洪世英","謝立雄","協理：陳明堂","副理：王宏元","業務：張世杰","蔡貴霖","張羽蓉","蔡佳彤","蔡杰恩"]},{"no":7,"name":"男方親友","guests":["三姑林素敏","二伯母蔡麗華","五嬸陳守真","林靜緹","林懋元","吳亮雲","楊品宸","楊振承","楊振承老婆"]},{"no":8,"name":"金華國中","guests":["楊雅婷","胡景淳","羅傑","林世揚","陳樂","廖育瑩","許維恩","許維恩女友","廖劭恩(Stan)","黃可萱 (Kelly)"]},{"no":9,"name":"ASUS無與倫比","guests":["林文信(Alan)","呂宛倫(Lexi)","陳巧琪(Cora)","蔡承家(Peter)","Peter 女友","楊雅竹(Enya)","簡宜珊(Vivian)","徐盈盈(Eileen)","Eileen朋友","翁煒傑Eric"]},{"no":10,"name":"ASUS堅若磐石","guests":["謝曜陽(Andy)","安安","張文和(Fred)","Fred女友","胡高霖(Avery)","黃柏鈞(Baron)","Lucy","何紹綦(Eric)","周昱呈(Yuki)","Yuki女友"]},{"no":11,"name":"曾經有一個團","guests":["吳明哲","鍾昀廷","廖宏成","蘇士哲","廖志豪","林書壘","劉承翰","劉承翰女友","何恭騰","江翰穎"]},{"no":12,"name":"男方親友","guests":["張俊明","湯育存 (小偉)","楊坤燦","黃明雄","鄭麗娜","施茂雄醫師","楊適"]},{"no":13,"name":"福智觀功念恩","guests":["周秀麗","花春雄","余世香","林立茱","于榮琴","游素珠","蕭敏伶","杜煥昌"]},{"no":14,"name":"懷特","guests":["邱楊浩 (James)","林愛萍","陳奕欣(Johnny)","林薪逢(西風)","李昊禹(Lavine)"]},{"no":15,"name":"女方親戚1","guests":["舅媽","林湘婷","林韋凱","林韋嘉","二表嫂","表姪","表姪女","阿姨林麗珍","姨丈","新娘弟弟","阿姨陳秋燕"]},{"no":16,"name":"女方親戚2","guests":["堂妹陳亮㚬","堂弟陳長牧","三伯陳炳榕","堂妹陳瑾萱","姑姑陳琳琳","姑丈丁治順","表弟丁士恆(Joseph)","表妹丁于珊(Rachael)","爸友王明智","王明智老婆"]},{"no":17,"name":"女方長輩1","guests":["林雪如阿姨","許珀鳳阿姨","黃文伶阿姨","黃文伶阿姨老公","劉惠惠老師","劉惠惠老師老公","劉惠惠老師小孩","胡淑梅老師","師丈曾繁昌"]},{"no":18,"name":"北一","guests":["許恬寧","許恬寧老公","李孟軒","陳儀芳","陳儀芳男友"]},{"no":19,"name":"海洋","guests":["楊子璇","楊子璇男友","張湘菱(小綠)","李宛真(小茶)","羅巧伶(小歪)","柯翔元(小柯)","果果"]},{"no":20,"name":"曼陀羅的味道","guests":["陳依婷","林信宗","唐宏宇","黃韻庭","張廷謙","張廷謙女友","吳舜豪","吳舜豪老婆","吳昌鴻","陳祈銘(東東)","西西"]},{"no":21,"name":"高考","guests":["郭承翰","洪祥銘","洪祥銘女友","鄭少鈞","梁竹君"]},{"no":22,"name":"58期1","guests":["吳益安","黃新嵐","呂佳曄","劉峻愷","張宜晴","邱鵲霙","陳玠安","施雨欣","劉耀中","莊逸鈞"]},{"no":23,"name":"58期2","guests":["張元嘉","張銀珏","劉方","李柏毅","阮思齊(女)","陳雅萍","盧本承","簡亦妤","施惠慈","施惠慈老公","施惠慈寶寶"]},{"no":24,"name":"58期3","guests":["黃弘岳","蔡長諺","陳鷖人","張鉯喬","岳安洋","簡以剛","簡以剛老婆","簡以剛胖胖"]},{"no":25,"name":"58期4","guests":["徐芳禧","林柏旭","王翊軒","郭加寧(nini)","林秀俊","郭建廷","鐘奕東","陳欣汝","陳欣汝老公"]},{"no":26,"name":"肅2","guests":["蘇靖雅","許立軒","何書雅","書雅老公","簡思齊(男)","劉嘉良副座","劉嘉良副座家人","呂姵樺","張楷翊","曹宜琳"]},{"no":27,"name":"輔導員新北處","guests":["何銘津輔導員","林青瑾輔導員","鍾志清輔導員","郭力瑋輔導員","劉家榮主任","王重陽主任"]},{"no":28,"name":"新北處","guests":["黃靖雅","李易庭","葉恆甫","林怡妙","彭柏欽"]},{"no":29,"name":"保防處","guests":["林添進處長","朱美音專門委員","曾尤弘專門委員","王麗菁科長","許炯煌科長","林妤庭","杜立麒"]}];
+
+/* ================= 場地幾何（座標取自飯店平面圖 PDF） ================= */
+const GEO = {
+  tables: { /* no:[x,y,r] */
+    1:[443.7,393.3,14.2], 2:[419.1,425.6,10.75], 3:[377.7,425.9,10.75], 5:[333.5,425.9,10.75],
+    6:[289.1,425.9,10.75], 7:[248.6,425.6,10.75], 8:[205.4,425.0,10.75], 9:[167.8,426.9,10.75],
+    10:[101.8,416.2,10.75], 11:[398.0,393.4,10.75], 12:[357.0,394.2,10.75], 13:[310.5,393.4,10.75],
+    14:[269.3,392.4,10.75], 15:[227.8,393.3,10.75], 16:[189.4,392.7,10.75], 17:[149.5,391.0,10.75],
+    18:[420.0,335.7,10.75], 19:[384.5,336.0,10.75], 20:[338.1,335.7,10.75], 21:[301.2,336.0,10.75],
+    22:[265.9,335.8,10.75], 23:[224.9,333.6,10.75], 24:[191.0,332.6,10.75], 25:[153.5,332.1,10.75],
+    26:[92.1,358.0,10.75], 27:[111.1,324.1,10.75], 28:[432.2,285.6,10.75], 29:[392.7,278.1,10.75]
+  },
+  corridors: { B:{y:445,x0:96,x1:455}, M:{y:409.7,x0:96,x1:455}, C:{y:363.8,x0:112,x1:466}, T:{y:309,x0:390.7,x1:446} },
+  links: [ ["B","M",[126,134.8,186.6,227,268.9,311.3,355.6,398.4,441]],
+           ["M","C",[126,169.5,208.6,248.6,289.9,333.8,377.5,420.9]],
+           ["C","T",[402.3,440]] ],
+  weights: { B:1, M:2.2, C:0.45, T:1 },   /* 紅毯為主動脈、避免穿窄走道 */
+  entrance: {x:150, y:468, joinY:445},
+  /* 各桌停靠走道與接近路徑 */
+  approach: {
+    1:{c:"C",ax:443.7,tail:[[443.7,376.6]]},
+    2:{c:"B",ax:419.1,tail:[[419.1,438.9]]}, 3:{c:"B",ax:377.7,tail:[[377.7,439.2]]},
+    5:{c:"B",ax:333.5,tail:[[333.5,439.2]]}, 6:{c:"B",ax:289.1,tail:[[289.1,439.2]]},
+    7:{c:"B",ax:248.6,tail:[[248.6,438.9]]}, 8:{c:"B",ax:205.4,tail:[[205.4,438.3]]},
+    9:{c:"B",ax:167.8,tail:[[167.8,440.2]]}, 10:{c:"B",ax:101.8,tail:[[101.8,429.5]]},
+    11:{c:"C",ax:398,tail:[[398,380.2]]}, 12:{c:"C",ax:357,tail:[[357,380.9]]},
+    13:{c:"C",ax:310.5,tail:[[310.5,380.2]]}, 14:{c:"C",ax:269.3,tail:[[269.3,379.2]]},
+    15:{c:"C",ax:227.8,tail:[[227.8,380.0]]}, 16:{c:"C",ax:189.4,tail:[[189.4,379.5]]},
+    17:{c:"C",ax:149.5,tail:[[149.5,377.8]]},
+    18:{c:"C",ax:420,tail:[[420,349.0]]}, 19:{c:"C",ax:384.5,tail:[[384.5,349.3]]},
+    20:{c:"C",ax:338.1,tail:[[338.1,349.0]]}, 21:{c:"C",ax:301.2,tail:[[301.2,349.3]]},
+    22:{c:"C",ax:265.9,tail:[[265.9,349.1]]}, 23:{c:"C",ax:224.9,tail:[[224.9,346.9]]},
+    24:{c:"C",ax:191,tail:[[191,345.9]]}, 25:{c:"C",ax:153.5,tail:[[153.5,345.4]]},
+    26:{c:"C",ax:114,tail:[[104.5,360.8]]},
+    27:{c:"C",ax:132.3,tail:[[132.3,324.1],[124.4,324.1]]},
+    28:{c:"T",ax:440,tail:[[435.8,298.2]]},
+    29:{c:"T",ax:392.7,tail:[[392.7,291.4]]}
+  },
+  wall: "M546.3 460.2 L487.5 460.2 487.5 459.1 469 459.1 469 460.2 444.5 460.2 390.5 460.2 390.5 459.1 372 459.1 372 460.2 347.5 460.2 293.5 460.2 293.5 459.1 275 459.1 275 460.2 196.5 460.2 196.5 459.1 178 459.1 178 460.2 150.7 460.2 126.2 460.2 98.9 460.2 98.9 459.1 91.1 459.1 91.1 438.1 88.4 438.1 88.4 438.6 84 438.6 78.5 412.3 73 383.4 68.1 354.5 65.8 340 65.7 328.2 68.9 316.9 75 306.8 83.6 298.8 94 293.4 107.3 288.9 134.1 280.6 161.2 273.3 188.6 267.1 216.3 261.9 244.1 257.8 272 254.8 300.1 252.9 328.2 252.1 356.3 252.4 384.3 253.8 412.3 256.2 440.2 259.7 467.9 264.4 495.4 270 522.7 276.8 548.3 284.1 546.3 289.8 Z",
+  carpet:[123.9,355.7,341.7,16.1],
+  stage:[470.4,333.7,42.1,85.3],
+  equip:[[81.5,301.3],[178,301.3],[275,301.3],[372,301.3],[469,301.3]],
+  screens:[[178,196.5],[275,293.5],[372,390.5],[469,487.5]]
+};
+
+/* ================= 搜尋 ================= */
+const norm = s => (s||"").normalize("NFKC").toLowerCase().replace(/[\s()（）:：・·。.，,]/g,"");
+const GUESTS = [];
+TABLES.forEach(t => t.guests.forEach(g => {
+  const tokens = new Set([norm(g)]);
+  const paren = g.match(/[（(]([^（）()]+)[）)]/); if(paren) tokens.add(norm(paren[1]));
+  tokens.add(norm(g.replace(/[（(][^（）()]*[）)]/g,"")));
+  const colon = g.split(/[:：]/); if(colon.length>1) tokens.add(norm(colon[colon.length-1]));
+  GUESTS.push({name:g, no:t.no, tname:t.name, tokens:[...tokens].filter(Boolean)});
+}));
+function search(qRaw){
+  const q = norm(qRaw);
+  if(!q) return [];
+  const res = [];
+  for(const g of GUESTS){
+    let best = -1;
+    for(const tk of g.tokens){
+      if(tk.startsWith(q)) best = Math.max(best, 2);
+      else if(tk.includes(q)) best = Math.max(best, 1);
+    }
+    if(best>0) res.push({type:"guest", score:best, len:g.name.length, ...g});
+  }
+  for(const t of TABLES){
+    if(String(t.no)===q || norm(t.name).includes(q))
+      res.push({type:"table", score:3, len:0, no:t.no, tname:t.name, name:"第 "+t.no+" 桌"});
+  }
+  res.sort((a,b)=> b.score-a.score || a.len-b.len || a.no-b.no);
+  return res.slice(0,8);
+}
+
+/* ================= Dijkstra 路徑 ================= */
+function buildPath(tableNo){
+  const ap = GEO.approach[tableNo];
+  const C = GEO.corridors;
+  const nodeXs = {B:new Set(),M:new Set(),C:new Set(),T:new Set()};
+  for(const [a,b,xs] of GEO.links) xs.forEach(x=>{nodeXs[a].add(x); nodeXs[b].add(x);});
+  Object.values(GEO.tables) && Object.entries(GEO.approach).forEach(([no,a])=>nodeXs[a.c].add(a.ax));
+  nodeXs.B.add(GEO.entrance.x);
+  const id=(c,x)=>c+"@"+x, nodes={}, edges={};
+  const addEdge=(u,v,w)=>{(edges[u]=edges[u]||[]).push([v,w]);(edges[v]=edges[v]||[]).push([u,w]);};
+  for(const c in nodeXs){
+    const xs=[...nodeXs[c]].filter(x=>x>=C[c].x0-0.1&&x<=C[c].x1+0.1).sort((a,b)=>a-b);
+    xs.forEach((x,i)=>{ nodes[id(c,x)]=[x,C[c].y]; if(i>0) addEdge(id(c,xs[i-1]),id(c,x),(x-xs[i-1])*(GEO.weights[c]||1)); });
+  }
+  for(const [a,b,xs] of GEO.links) xs.forEach(x=>{ if(nodes[id(a,x)]&&nodes[id(b,x)]) addEdge(id(a,x),id(b,x),Math.abs(C[a].y-C[b].y)); });
+  const startId="ENT"; nodes[startId]=[GEO.entrance.x,GEO.entrance.y];
+  addEdge(startId,id("B",GEO.entrance.x),GEO.entrance.y-GEO.entrance.joinY);
+  const goal=id(ap.c,ap.ax);
+  const dist={},prev={},Q=new Set(Object.keys(nodes));
+  for(const n of Q) dist[n]=Infinity; dist[startId]=0;
+  while(Q.size){
+    let u=null,du=Infinity; for(const n of Q) if(dist[n]<du){du=dist[n];u=n;}
+    if(u===null||u===goal) break; Q.delete(u);
+    for(const [v,w] of (edges[u]||[])) if(Q.has(v)&&du+w<dist[v]){dist[v]=du+w;prev[v]=u;}
+  }
+  const pts=[]; let cur=goal;
+  while(cur){ pts.unshift(nodes[cur]); cur=prev[cur]; }
+  ap.tail.forEach(p=>pts.push(p));
+  /* 去除共線點 */
+  const clean=[pts[0]];
+  for(let i=1;i<pts.length-1;i++){
+    const [a,b,c]=[clean[clean.length-1],pts[i],pts[i+1]];
+    if(Math.abs((b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]))>0.5) clean.push(b);
+  }
+  clean.push(pts[pts.length-1]);
+  return clean;
+}
+function roundedPathD(pts,r=5){
+  if(pts.length<2) return "";
+  let d=`M${pts[0][0]} ${pts[0][1]}`;
+  for(let i=1;i<pts.length-1;i++){
+    const [px,py]=pts[i-1],[cx,cy]=pts[i],[nx,ny]=pts[i+1];
+    const v1=[px-cx,py-cy],v2=[nx-cx,ny-cy];
+    const l1=Math.hypot(...v1),l2=Math.hypot(...v2);
+    const rr=Math.min(r,l1/2,l2/2);
+    const p1=[cx+v1[0]/l1*rr,cy+v1[1]/l1*rr],p2=[cx+v2[0]/l2*rr,cy+v2[1]/l2*rr];
+    d+=` L${p1[0].toFixed(1)} ${p1[1].toFixed(1)} Q${cx} ${cy} ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`;
+  }
+  const e=pts[pts.length-1];
+  d+=` L${e[0]} ${e[1]}`;
+  return d;
+}
+
+/* ================= 地圖繪製 ================= */
+const SVGNS="http://www.w3.org/2000/svg";
+const map=document.getElementById("map");
+const FULL={x:58,y:245,w:504,h:262};
+function el(tag,attrs,parent){const e=document.createElementNS(SVGNS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);(parent||map).appendChild(e);return e;}
+function drawBase(targetNo){
+  map.innerHTML="";
+  el("path",{d:GEO.wall,fill:"#FFFCF5",stroke:"#A8967C","stroke-width":1.6,"stroke-linejoin":"round"});
+  const [cx,cy,cw,ch]=GEO.carpet;
+  el("rect",{x:cx,y:cy,width:cw,height:ch,rx:2,fill:"#E3A6A6",opacity:.6});
+  const [sx,sy,sw,sh]=GEO.stage;
+  el("rect",{x:sx,y:sy,width:sw,height:sh,rx:3,fill:"#F0E3C6",stroke:"#C9B896","stroke-width":1});
+  el("text",{x:sx+sw/2,y:sy+sh/2,"text-anchor":"middle","dominant-baseline":"central",
+    "font-size":9,fill:"#8C7F70","writing-mode":"tb",style:"letter-spacing:3px"}).textContent="舞台";
+  GEO.equip.forEach(([x,y])=>el("rect",{x,y,width:18.5,height:12.6,rx:1.5,fill:"#E6DAC4"}));
+  GEO.screens.forEach(([x1,x2])=>el("line",{x1,y1:459.5,x2,y2:459.5,stroke:"#B5A890","stroke-width":3}));
+  /* 入口 */
+  el("rect",{x:138,y:457.5,width:24,height:5,fill:"#FBF6EE"});
+  el("path",{d:"M150 470 L150 452 M144 458 L150 451 L156 458",stroke:"#B3304A","stroke-width":2,fill:"none","stroke-linecap":"round","stroke-linejoin":"round"});
+  el("text",{x:150,y:481,"text-anchor":"middle","font-size":10,fill:"#B3304A","font-weight":"700"}).textContent="入口";
+  el("text",{x:208,y:481,"text-anchor":"middle","font-size":8.5,fill:"#B5A890"}).textContent="收禮桌";
+  el("rect",{x:188,y:470,width:40,height:5,rx:2,fill:"none",stroke:"#CFC2A8","stroke-width":.8});
+  /* 桌子 */
+  for(const no in GEO.tables){
+    const [x,y,r]=GEO.tables[no];
+    const isMain=no==="1", isTarget=+no===targetNo;
+    const g=el("g",{});
+    el("circle",{cx:x,cy:y,r,fill:isTarget?"#B98A2F":(isMain?"#C8536B":"#F4EAD7"),
+      stroke:isTarget?"#8a6517":(isMain?"#A23B52":"#CDBC9D"),"stroke-width":isTarget?1.5:1},g);
+    el("text",{x,y:y+.5,"text-anchor":"middle","dominant-baseline":"central",
+      "font-size":isMain?8.5:9.5,"font-weight":"700",
+      fill:(isTarget||isMain)?"#fff":"#6B5B45"},g).textContent=isMain?"主桌":no;
+    if(isTarget){
+      const ring=el("circle",{cx:x,cy:y,r:r+3,fill:"none",stroke:"#B98A2F","stroke-width":1.6,opacity:.9},g);
+      const a1=el("animate",{attributeName:"r",values:`${r+2};${r+9}`,dur:"1.5s",repeatCount:"indefinite"},ring);
+      el("animate",{attributeName:"opacity",values:"0.85;0",dur:"1.5s",repeatCount:"indefinite"},ring);
+    }
+  }
+  /* Ballroom 淡標示 */
+  el("text",{x:200,y:268,"font-size":8,fill:"#CFC2A8","text-anchor":"middle",style:"letter-spacing:2px"}).textContent="BALLROOM I";
+  el("text",{x:430,y:272,"font-size":8,fill:"#CFC2A8","text-anchor":"middle",style:"letter-spacing:2px"}).textContent="BALLROOM II";
+}
+
+/* ================= 動畫 ================= */
+let anim={raf:0};
+const reduceMotion=matchMedia("(prefers-reduced-motion: reduce)").matches;
+function setVB(x,y,w,h){map.setAttribute("viewBox",`${x} ${y} ${w} ${h}`);}
+function vbOf(){return map.getAttribute("viewBox").split(" ").map(Number);}
+const clampVB=(x,y,w,h)=>{
+  x=Math.min(Math.max(x,FULL.x-10),FULL.x+FULL.w-w+10);
+  y=Math.min(Math.max(y,FULL.y-10),FULL.y+FULL.h-h+10);
+  return [x,y,w,h];
+};
+const ease=t=>t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+function animateRoute(targetNo){
+  cancelAnimationFrame(anim.raf);
+  drawBase(targetNo);
+  const pts=buildPath(targetNo);
+  const d=roundedPathD(pts);
+  const route=el("path",{d,fill:"none",stroke:"#B3304A","stroke-width":3.2,
+    "stroke-linecap":"round","stroke-linejoin":"round","stroke-dasharray":"7 5",opacity:.95});
+  const dot=el("circle",{r:4.6,fill:"#B3304A",stroke:"#fff","stroke-width":1.8,opacity:0});
+  const L=route.getTotalLength();
+  document.getElementById("walkInfo").textContent=
+    `自入口步行約 ${Math.max(5,Math.round(L*CONFIG.mPerPt))} 公尺`;
+  if(reduceMotion){ setVB(FULL.x,FULL.y,FULL.w,FULL.h); dot.setAttribute("opacity",1);
+    const p=route.getPointAtLength(L); dot.setAttribute("cx",p.x); dot.setAttribute("cy",p.y); return; }
+  route.setAttribute("stroke-dashoffset",L); route.setAttribute("stroke-dasharray",`${L} ${L}`);
+  const Z={w:230,h:230*FULL.h/FULL.w};
+  const start=performance.now();
+  const T0=700, T1=900, T2=Math.min(7000,Math.max(3800,L*14)), T3=900, T4=700, HOLD=900;
+  const target=GEO.tables[targetNo];
+  function follow(px,py,w,h){const[vx,vy,vw,vh]=vbOf();
+    const nx=px-w/2, ny=py-h/2.1;
+    const k=0.12;
+    setVB(...clampVB(vx+(nx-vx)*k, vy+(ny-vy)*k, w, h));}
+  function frame(now){
+    const t=now-start;
+    if(t<T0){ setVB(FULL.x,FULL.y,FULL.w,FULL.h); }
+    else if(t<T0+T1){ const p=ease((t-T0)/T1);
+      const w=FULL.w+(Z.w-FULL.w)*p, h=FULL.h+(Z.h-FULL.h)*p;
+      const cx=FULL.x+FULL.w/2+(pts[0][0]-FULL.x-FULL.w/2)*p, cy=FULL.y+FULL.h/2+(pts[0][1]-FULL.y-FULL.h/2)*p;
+      setVB(...clampVB(cx-w/2,cy-h/2,w,h));
+      dot.setAttribute("opacity",1); dot.setAttribute("cx",pts[0][0]); dot.setAttribute("cy",pts[0][1]); }
+    else if(t<T0+T1+T2){ const p=ease((t-T0-T1)/T2);
+      const len=L*p, pt=route.getPointAtLength(len);
+      route.setAttribute("stroke-dashoffset",L-len);
+      dot.setAttribute("cx",pt.x); dot.setAttribute("cy",pt.y);
+      follow(pt.x,pt.y,Z.w,Z.h); }
+    else if(t<T0+T1+T2+HOLD){ route.setAttribute("stroke-dashoffset",0);
+      const pt=route.getPointAtLength(L); dot.setAttribute("cx",pt.x); dot.setAttribute("cy",pt.y);
+      follow(target[0],target[1],Z.w*0.85,Z.h*0.85); }
+    else if(t<T0+T1+T2+HOLD+T3){ const p=ease((t-T0-T1-T2-HOLD)/T3);
+      const[vx,vy,vw,vh]=vbOf();
+      const w=vw+(FULL.w-vw)*p, h=vh+(FULL.h-vh)*p;
+      const x=vx+(FULL.x-vx)*p, y=vy+(FULL.y-vy)*p;
+      setVB(x,y,w,h); }
+    else { setVB(FULL.x,FULL.y,FULL.w,FULL.h);
+      route.setAttribute("stroke-dasharray","7 5"); route.setAttribute("stroke-dashoffset",0); return; }
+    anim.raf=requestAnimationFrame(frame);
+  }
+  anim.raf=requestAnimationFrame(frame);
+}
+
+/* ================= 縮放/拖曳 ================= */
+(function(){
+  const ptrs=new Map(); let startDist=0,startVB=null,startMid=null;
+  const pt=e=>{const r=map.getBoundingClientRect();const[vx,vy,vw,vh]=vbOf();
+    return [vx+(e.clientX-r.left)/r.width*vw, vy+(e.clientY-r.top)/r.height*vh];};
+  map.addEventListener("pointerdown",e=>{cancelAnimationFrame(anim.raf);map.setPointerCapture(e.pointerId);
+    ptrs.set(e.pointerId,e);
+    if(ptrs.size===2){const[a,b]=[...ptrs.values()];startDist=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);
+      startVB=vbOf();startMid=[(a.clientX+b.clientX)/2,(a.clientY+b.clientY)/2];}
+    else{startVB=vbOf();startMid=[e.clientX,e.clientY];}});
+  map.addEventListener("pointermove",e=>{
+    if(!ptrs.has(e.pointerId))return; ptrs.set(e.pointerId,e);
+    const r=map.getBoundingClientRect();
+    if(ptrs.size===2){const[a,b]=[...ptrs.values()];
+      const dist=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);
+      const scale=Math.min(Math.max(startDist/dist,0.2),5);
+      let w=startVB[2]*scale,h=startVB[3]*scale;
+      w=Math.min(Math.max(w,FULL.w/5),FULL.w*1.2);h=w*FULL.h/FULL.w;
+      const mx=startVB[0]+(startMid[0]-r.left)/r.width*startVB[2];
+      const my=startVB[1]+(startMid[1]-r.top)/r.height*startVB[3];
+      setVB(...clampVB(mx-w*((startMid[0]-r.left)/r.width), my-h*((startMid[1]-r.top)/r.height), w, h));}
+    else if(ptrs.size===1&&startVB){
+      const dx=(e.clientX-startMid[0])/r.width*startVB[2];
+      const dy=(e.clientY-startMid[1])/r.height*startVB[3];
+      setVB(...clampVB(startVB[0]-dx,startVB[1]-dy,startVB[2],startVB[3]));}});
+  const up=e=>{ptrs.delete(e.pointerId);if(ptrs.size<2){startVB=vbOf();const v=[...ptrs.values()][0];if(v)startMid=[v.clientX,v.clientY];}};
+  map.addEventListener("pointerup",up);map.addEventListener("pointercancel",up);
+  map.addEventListener("dblclick",e=>{const[vx,vy,vw]=vbOf();
+    if(vw>FULL.w*0.7){const[mx,my]=pt(e);const w=FULL.w/2.4,h=FULL.h/2.4;setVB(...clampVB(mx-w/2,my-h/2,w,h));}
+    else setVB(FULL.x,FULL.y,FULL.w,FULL.h);});
+})();
+
+/* ================= UI 流程 ================= */
+const $=id=>document.getElementById(id);
+const q=$("q"),sugg=$("sugg");
+let current=null;
+function show(view){$("viewSearch").classList.toggle("active",view==="search");
+  $("viewResult").classList.toggle("active",view==="result");window.scrollTo(0,0);}
+function render(list){
+  sugg.innerHTML="";
+  if(!q.value.trim()){sugg.classList.remove("show");return;}
+  if(!list.length){sugg.innerHTML='<div class="none">查無資料，請試試其他寫法，或洽入口收禮桌服務人員</div>';}
+  list.forEach(item=>{
+    const b=document.createElement("button");
+    b.innerHTML=`<span class="who">${item.name}</span><span class="where">第 ${item.no} 桌 · ${item.tname}</span>`;
+    b.onclick=()=>go(item);
+    sugg.appendChild(b);});
+  sugg.classList.add("show");
+}
+q.addEventListener("input",()=>render(search(q.value)));
+q.addEventListener("keydown",e=>{if(e.key==="Enter"){const r=search(q.value);if(r.length===1)go(r[0]);}});
+function go(item){
+  current=item;
+  $("greet").innerHTML=item.type==="table"?`您查詢的是`:`<b>${item.name}</b>　您好，您的座位在`;
+  $("tableNo").textContent=item.no===1?"主桌":`第 ${item.no} 桌`;
+  $("tableName").textContent=item.tname;
+  $("tableName").style.display=item.no===1?"none":"inline-block";
+  show("result");
+  requestAnimationFrame(()=>animateRoute(item.no));
+}
+$("backBtn").onclick=()=>{show("search");q.value="";sugg.classList.remove("show");q.focus();};
+$("replayBtn").onclick=()=>current&&animateRoute(current.no);
+$("fullBtn").onclick=()=>{cancelAnimationFrame(anim.raf);setVB(FULL.x,FULL.y,FULL.w,FULL.h);};
+if(CONFIG.lineUrl&&CONFIG.lineUrl!=="__LINE"+"_URL__"){const b=$("lineBtn");b.href=CONFIG.lineUrl;b.style.display="inline-flex";}
+</script>
+</body>
+</html>
