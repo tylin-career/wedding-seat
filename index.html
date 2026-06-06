@@ -381,7 +381,7 @@ const clampVB=(x,y,w,h)=>{
   return [x,y,w,h];
 };
 const ease=t=>t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
-function animateRoute(targetNo){
+function animateRoute(targetNo,force){
   cancelAnimationFrame(anim.raf);
   drawBase(targetNo);
   const pts=buildPath(targetNo);
@@ -392,8 +392,9 @@ function animateRoute(targetNo){
   const L=route.getTotalLength();
   document.getElementById("walkInfo").textContent=
     `從入口出發，約 ${Math.max(5,Math.round(L*CONFIG.mPerPt))} 公尺的小旅行`;
-  if(reduceMotion){ setVB(FULL.x,FULL.y,FULL.w,FULL.h); dot.setAttribute("opacity",1);
-    const p=route.getPointAtLength(L); dot.setAttribute("cx",p.x); dot.setAttribute("cy",p.y); return; }
+  if(reduceMotion&&!force){ setVB(FULL.x,FULL.y,FULL.w,FULL.h); dot.setAttribute("opacity",1);
+    const p=route.getPointAtLength(L); dot.setAttribute("cx",p.x); dot.setAttribute("cy",p.y);
+    document.getElementById("walkInfo").textContent+="（點「重播路線」可觀看動畫）"; return; }
   route.setAttribute("stroke-dashoffset",L); route.setAttribute("stroke-dasharray",`${L} ${L}`);
   const Z={w:230,h:230*FULL.h/FULL.w};
   const start=performance.now();
@@ -505,7 +506,7 @@ function go(item){
   requestAnimationFrame(()=>animateRoute(item.no));
 }
 $("backBtn").onclick=()=>{show("search");q.value="";sugg.classList.remove("show");q.focus();};
-$("replayBtn").onclick=()=>current&&animateRoute(current.no);
+$("replayBtn").onclick=()=>current&&animateRoute(current.no,true);
 $("fullBtn").onclick=()=>{cancelAnimationFrame(anim.raf);setVB(FULL.x,FULL.y,FULL.w,FULL.h);};
 if(CONFIG.lineUrl&&CONFIG.lineUrl!=="__LINE"+"_URL__"){const b=$("lineBtn");b.href=CONFIG.lineUrl;b.style.display="inline-flex";}
 </script>
