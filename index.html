@@ -408,6 +408,8 @@ function render(list){
   sugg.innerHTML="";
   if(!q.value.trim()){sugg.classList.remove("show");return;}
   if(!list.length){sugg.innerHTML='<div class="none">查無資料，請試試其他寫法，或洽入口收禮桌服務人員</div>';}
+  else{const h=document.createElement("div");h.className="none";h.style.cssText="padding:9px 16px;font-size:13px";
+    h.textContent="請點選您的大名 ↓";sugg.appendChild(h);}
   list.forEach(item=>{
     const b=document.createElement("button");
     b.innerHTML=`<span class="who">${item.name}</span><span class="where">第 ${item.no} 桌 · ${item.tname}</span>`;
@@ -415,9 +417,20 @@ function render(list){
     sugg.appendChild(b);});
   sugg.classList.add("show");
 }
-q.addEventListener("input",()=>render(search(q.value)));
+let autoT=null;
+q.addEventListener("input",()=>{
+  clearTimeout(autoT);
+  const list=search(q.value);
+  render(list);
+  /* 打完整姓名且唯一命中 → 自動帶位 */
+  const nq=norm(q.value);
+  const exact=list.filter(r=>r.type==="guest"&&r.tokens&&r.tokens.includes(nq));
+  if(nq.length>=2&&exact.length===1&&list.filter(r=>r.type==="guest").length===1)
+    autoT=setTimeout(()=>go(exact[0]),600);
+});
 q.addEventListener("keydown",e=>{if(e.key==="Enter"){const r=search(q.value);if(r.length===1)go(r[0]);}});
 function go(item){
+  clearTimeout(autoT);
   current=item;
   $("greet").innerHTML=item.type==="table"?`您查詢的是`:`<b>${item.name}</b>　您好，您的座位在`;
   $("tableNo").textContent=item.no===1?"主桌":`第 ${item.no} 桌`;
