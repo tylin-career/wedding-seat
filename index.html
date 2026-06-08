@@ -71,11 +71,13 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
 .sugg button + button{border-top:1px solid #314465}
 .sugg button:active{background:#2A3D63}
 .sugg .who{font-weight:500}
+.sugg .badge{display:inline-block;font-size:11px;color:#1B2A4A;background:var(--gold);border-radius:999px;padding:1px 7px;margin-left:6px;vertical-align:1px;font-weight:700}
 .sugg .where{font-size:13px;color:var(--muted);white-space:nowrap;margin-left:12px}
 .sugg .none{padding:14px 16px;font-size:14px;color:var(--muted)}
 .linebar{margin-top:auto;padding-top:28px;text-align:center}
 .linebtn{display:inline-flex;align-items:center;gap:8px;background:#06C755;color:#fff;font-weight:500;
   font-size:15px;padding:11px 22px;border-radius:999px;text-decoration:none;box-shadow:0 3px 12px rgba(6,199,85,.3)}
+.linebtn-result{align-self:center;margin-top:16px}
 .foot{margin-top:14px;font-size:12px;color:var(--muted);text-align:center;line-height:1.9}
 /* ---------- result ---------- */
 .back{display:inline-flex;align-items:center;gap:6px;border:none;background:none;color:var(--muted);
@@ -91,10 +93,14 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
 .mapBox{margin-top:14px;background:#18233F;border:1px solid var(--line);border-radius:18px;overflow:hidden;
   box-shadow:0 8px 28px rgba(0,0,0,.3);position:relative}
 .mapBox svg{display:block;width:100%;height:auto;touch-action:none;user-select:none}
-.ctrls{display:flex;gap:10px;margin-top:14px}
-.ctrls button{flex:1;font-family:inherit;font-size:15px;font-weight:500;padding:12px 0;border-radius:12px;cursor:pointer}
-.btnPrimary{background:var(--gold);color:#1B2A4A;border:none;box-shadow:0 3px 14px rgba(242,201,76,.3)}
-.btnGhost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.ctrls{display:flex;gap:12px;margin-top:16px}
+.ctrls button{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  font-family:inherit;font-size:16px;font-weight:700;padding:15px 0;border-radius:14px;cursor:pointer;
+  transition:transform .08s}
+.ctrls button:active{transform:scale(0.97)}
+.ctrls button svg{flex:none}
+.btnPrimary{background:var(--gold);color:#1B2A4A;border:none;box-shadow:0 4px 16px rgba(242,201,76,.35)}
+.btnGhost{background:rgba(255,255,255,.04);color:var(--ink);border:1.5px solid var(--line)}
 .note{font-size:12px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.7}
 .view{display:none}
 .view.active{display:flex;flex-direction:column;flex:1}
@@ -167,24 +173,25 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
 
 <!-- ============ 結果頁 ============ -->
 <div class="view" id="viewResult">
-  <button class="back" id="backBtn">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
-    重新搜尋
-  </button>
   <div class="resCard">
     <div class="greet" id="greet"></div>
     <div class="tableNo serif" id="tableNo"></div>
     <div class="tableName" id="tableName"></div>
     <div class="walk" id="walkInfo"></div>
+    <div class="walk" id="seatInfo" style="color:var(--gold);margin-top:4px"></div>
   </div>
   <div class="mapBox">
     <svg id="map" viewBox="58 245 504 262" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="宴會廳平面圖與前往座位的路線"></svg>
   </div>
   <div class="ctrls">
-    <button class="btnPrimary" id="replayBtn">▶ 重播路線</button>
-    <button class="btnGhost" id="fullBtn">查看全圖</button>
+    <button class="btnGhost" id="replayBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>重播路線</button>
+    <button class="btnPrimary" id="backBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>重新搜尋</button>
   </div>
-  <p class="note">沿著星光路線前進即可抵達 · 可雙指縮放星圖 · 本星圖由 B-612 測繪</p>
+  <p class="note">沿著星光路線前進即可抵達 · 地圖可用雙指縮放</p>
+  <a class="linebtn linebtn-result" id="lineBtnResult" href="#" target="_blank" rel="noopener" style="display:none">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.64 2 10.13c0 4.03 3.55 7.4 8.34 8.04.33.07.77.22.88.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1 .88.55 1.08-.46 5.84-3.44 7.97-5.89C21.42 13.5 22 11.9 22 10.13 22 5.64 17.52 2 12 2z"/></svg>
+    加入婚禮官方 LINE
+  </a>
 </div>
 
 </div>
@@ -197,44 +204,35 @@ const CONFIG = {
 };
 
 /* ================= 名單資料 ================= */
-const TABLES = [{"no":1,"name":"主桌","guests":["新郎","新娘","新郎爸爸","新郎媽媽","新娘爸爸","新娘媽媽","新郎舅舅","新郎乾爹陳聰裕","新郎乾媽張瓊瑤","新娘外婆","新娘二伯陳炳藝"]},{"no":2,"name":"1+4","guests":["陳世穎","吳昭儀","陳恩菲（孩）","陳綺恩（孩）","陳世諺","陳昱璇","蔡坤宏","張淑俐","阿隆","阿隆媽"]},{"no":3,"name":"3+5","guests":["張錦勳","張錫媛","張令妮","張阿紫","絡腳","張滿理","蔡建華","尚善閔","尚廷禹","呂潔瑜","新郎外婆"]},{"no":5,"name":"7+男方家人","guests":["嫂爸","嫂媽","嫂妹","嫂妹男友","嫂嫂外婆","哥哥","嫂嫂","張詠涵","張宸翌"]},{"no":6,"name":"6+沛森+宏益","guests":["陳秀梅","洪世英","謝立雄","協理：陳明堂","副理：王宏元","業務：張世杰","蔡貴霖","張羽蓉","蔡佳彤","蔡杰恩"]},{"no":7,"name":"男方親友","guests":["三姑林素敏","二伯母蔡麗華","五嬸陳守真","林靜緹","林懋元","吳亮雲","楊品宸","楊振承","楊振承老婆"]},{"no":8,"name":"金華國中","guests":["楊雅婷","胡景淳","羅傑","林世揚","陳樂","廖育瑩","許維恩","許維恩女友","廖劭恩(Stan)","黃可萱 (Kelly)"]},{"no":9,"name":"ASUS無與倫比","guests":["林文信(Alan)","呂宛倫(Lexi)","陳巧琪(Cora)","蔡承家(Peter)","Peter 女友","楊雅竹(Enya)","簡宜珊(Vivian)","徐盈盈(Eileen)","Eileen朋友","翁煒傑Eric"]},{"no":10,"name":"ASUS堅若磐石","guests":["謝曜陽(Andy)","安安","張文和(Fred)","Fred女友","胡高霖(Avery)","黃柏鈞(Baron)","Lucy","何紹綦(Eric)","周昱呈(Yuki)","Yuki女友"]},{"no":11,"name":"曾經有一個團","guests":["吳明哲","鍾昀廷","廖宏成","蘇士哲","廖志豪","林書壘","劉承翰","劉承翰女友","何恭騰","江翰穎"]},{"no":12,"name":"男方親友","guests":["張俊明","湯育存 (小偉)","楊坤燦","黃明雄","鄭麗娜","施茂雄醫師","楊適"]},{"no":13,"name":"福智觀功念恩","guests":["周秀麗","花春雄","余世香","林立茱","于榮琴","游素珠","蕭敏伶","杜煥昌"]},{"no":14,"name":"懷特","guests":["邱楊浩 (James)","林愛萍","陳奕欣(Johnny)","林薪逢(西風)","李昊禹(Lavine)"]},{"no":15,"name":"女方親戚1","guests":["舅媽","林湘婷","林韋凱","林韋嘉","二表嫂","表姪","表姪女","阿姨林麗珍","姨丈","新娘弟弟","阿姨陳秋燕"]},{"no":16,"name":"女方親戚2","guests":["堂妹陳亮㚬","堂弟陳長牧","三伯陳炳榕","堂妹陳瑾萱","姑姑陳琳琳","姑丈丁治順","表弟丁士恆(Joseph)","表妹丁于珊(Rachael)","爸友王明智","王明智老婆"]},{"no":17,"name":"女方長輩1","guests":["林雪如阿姨","許珀鳳阿姨","黃文伶阿姨","黃文伶阿姨老公","劉惠惠老師","劉惠惠老師老公","劉惠惠老師小孩","胡淑梅老師","師丈曾繁昌"]},{"no":18,"name":"北一","guests":["許恬寧","許恬寧老公","李孟軒","陳儀芳","陳儀芳男友"]},{"no":19,"name":"海洋","guests":["楊子璇","楊子璇男友","張湘菱(小綠)","李宛真(小茶)","羅巧伶(小歪)","柯翔元(小柯)","果果"]},{"no":20,"name":"曼陀羅的味道","guests":["陳依婷","林信宗","唐宏宇","黃韻庭","張廷謙","張廷謙女友","吳舜豪","吳舜豪老婆","吳昌鴻","陳祈銘(東東)","西西"]},{"no":21,"name":"高考","guests":["郭承翰","洪祥銘","洪祥銘女友","鄭少鈞","梁竹君"]},{"no":22,"name":"58期1","guests":["吳益安","黃新嵐","呂佳曄","劉峻愷","張宜晴","邱鵲霙","陳玠安","施雨欣","劉耀中","莊逸鈞"]},{"no":23,"name":"58期2","guests":["張元嘉","張銀珏","劉方","李柏毅","阮思齊(女)","陳雅萍","盧本承","簡亦妤","施惠慈","施惠慈老公","施惠慈寶寶"]},{"no":24,"name":"58期3","guests":["黃弘岳","蔡長諺","陳鷖人","張鉯喬","岳安洋","簡以剛","簡以剛老婆","簡以剛胖胖"]},{"no":25,"name":"58期4","guests":["徐芳禧","林柏旭","王翊軒","郭加寧(nini)","林秀俊","郭建廷","鐘奕東","陳欣汝","陳欣汝老公"]},{"no":26,"name":"肅2","guests":["蘇靖雅","許立軒","何書雅","書雅老公","簡思齊(男)","劉嘉良副座","劉嘉良副座家人","呂姵樺","張楷翊","曹宜琳"]},{"no":27,"name":"輔導員新北處","guests":["何銘津輔導員","林青瑾輔導員","鍾志清輔導員","郭力瑋輔導員","劉家榮主任","王重陽主任"]},{"no":28,"name":"新北處","guests":["黃靖雅","李易庭","葉恆甫","林怡妙","彭柏欽"]},{"no":29,"name":"保防處","guests":["林添進處長","朱美音專門委員","曾尤弘專門委員","王麗菁科長","許炯煌科長","林妤庭","杜立麒"]}];
+const TABLES = [{"no":1,"name":"主桌","guests":["新郎林鼎元","新娘陳蓓蓓","新郎爸爸林久雄","新郎媽媽張幸敏","新娘爸爸陳炳章","新娘媽媽林麗芬","新郎舅舅","新郎乾爹陳聰裕","新郎乾媽張瓊瑤","新娘外婆","新娘二伯陳炳藝","新娘舅媽"]},{"no":2,"name":"女方親戚1","guests":["林湘婷","林韋凱","林韋嘉","二表嫂","表姪","表姪女","阿姨林麗珍","姨丈","新娘弟弟陳子捷","阿姨陳秋燕"]},{"no":3,"name":"女方長輩1","guests":["林雪如阿姨","許珀鳳阿姨","黃文伶阿姨","周志銘","劉惠惠老師","劉惠惠老師老公","劉惠惠老師小孩","胡淑梅老師","師丈曾繁昌","劉麗華阿姨"]},{"no":5,"name":"蓓蓓同事","guests":["林添進處長","朱美音專門委員","曾尤弘專門委員","王麗菁科長","許烱煌科長","劉家榮主任","王重陽主任","鍾志清輔導員","郭力瑋輔導員"]},{"no":6,"name":"蓓蓓同事","guests":["蘇靖雅","許立軒","何書雅","何書雅老公","簡思齊(男)","劉嘉良副座","劉嘉良副座家人","呂姵樺","張楷翊","曹宜琳"]},{"no":7,"name":"ASUS堅若磐石","guests":["謝曜陽 (Andy)","安安","張文和 (Fred)","張文和 (Fred)","胡高霖 (Avery)","黃柏鈞 (Baron)","Lucy","何紹綦 (Eric)","周昱呈 (Yuki)","周昱呈 (Yuki)","翁煒傑 (Eric)"]},{"no":8,"name":"曾經有一個團","guests":["吳明哲","鍾昀廷","廖宏成","蘇士哲","廖志豪","林書壘","劉承翰","劉承翰女友","何恭騰","江翰穎"]},{"no":11,"name":"7+男方家人","guests":["嫂爸","嫂媽","嫂妹","嫂妹男友","嫂嫂外婆","林晁立","吳若瑄","嫂嫂","張詠涵","張宸翌"]},{"no":12,"name":"女方親戚2","guests":["堂妹陳亮㚬","堂弟陳長牧","三伯陳炳榕","堂妹陳瑾萱","姑姑陳琳琳","姑丈丁治順","表弟丁士恆Joseph","表妹丁于珊Rachael","王明智","王明智老婆"]},{"no":13,"name":"蓓蓓同事","guests":["何銘津輔導員","何銘津輔導員老婆","林青瑾輔導員","黃靖雅","李易庭","葉恆甫","林怡妙","彭柏欽","林妤庭","杜立麒"]},{"no":14,"name":"金華國中","guests":["楊雅婷","胡景淳","陳庭㚬","徐國瑋","羅傑","林世揚","陳樂","廖育瑩","許維恩","許維恩"]},{"no":15,"name":"ASUS無與倫比","guests":["林文信 (Alan)","呂宛倫 (Lexi)","陳巧琪 (Cora)","蔡承家 (Peter)","蔡承家 (Peter)","楊雅竹 (Enya)","簡宜珊 (Vivian)","徐盈盈 (Eileen)","徐盈盈 (Eileen)","廖劭恩 (Stan)","黃可萱 (Kelly)"]},{"no":16,"name":"蓓蓓高中大學","guests":["李孟軒","陳儀芳","陳儀芳男友","楊子璇(璇璇)","楊子璇男友","張湘菱(小綠)","李宛真(小茶)","羅巧伶(小歪)","柯翔元(小柯)","果果"]},{"no":18,"name":"3+5","guests":["張錦勳","張錫媛","張令妮","張阿紫","絡腳","張滿理","蔡建華","尚善閔","尚廷禹","呂潔瑜","新郎外婆"]},{"no":19,"name":"1+4","guests":["陳世穎","吳昭儀","陳恩菲","陳綺恩","陳世諺","陳昱璇","蔡坤宏","張淑俐","阿隆","阿隆媽"]},{"no":20,"name":"男方親友","guests":["三姑林素敏","二伯母蔡麗華","五嬸陳守真","林靜緹","林懋元","林懋元","吳亮雲","楊品宸","楊振承","楊振承"]},{"no":21,"name":"男方親友","guests":["張俊明","張俊明","湯育存 (小偉)","楊坤燦","楊坤燦","黃明雄","鄭麗娜","鄭麗娜","施茂雄醫師","楊適"]},{"no":22,"name":"58期1","guests":["吳益安","黃新嵐","呂佳曄","劉峻愷","張宜晴","邱鵲霙","施雨欣","王翊軒","郭加寧(nini)","許恬寧","許恬寧老公"]},{"no":23,"name":"58期4","guests":["徐芳禧","林柏旭","林秀俊","郭建廷","鐘奕東","陳欣汝","陳欣汝老公","陳鷖人","劉方","阮思齊(女)"]},{"no":24,"name":"58期3","guests":["黃弘岳","蔡長諺","張鉯喬","岳安洋","劉耀中","莊逸鈞","簡以剛","李欣庭","胖胖"]},{"no":25,"name":"狼殺團","guests":["陳依婷","林信宗","唐宏宇","黃韻庭","張廷謙","張廷謙女友","吳舜豪","吳舜豪老婆","吳昌鴻","陳祈銘(東東)","西西"]},{"no":26,"name":"懷特、高考","guests":["邱楊浩 (James)","林愛萍","陳奕欣 (Johnny)","林薪逢 (西風)","李昊禹 (Lavine)","郭承翰","洪祥銘","洪祥銘女友","鄭少鈞","梁竹君"]},{"no":28,"name":"6+沛森+宏益","guests":["陳秀梅","洪世英","謝立雄","協理：陳明堂","副理：王宏元","業務：張世杰","蔡貴霖","張羽蓉","蔡佳彤","蔡杰恩"]},{"no":29,"name":"福智觀功念恩","guests":["周秀麗","花春雄","余世香","林立茱","于榮琴","游素珠","蕭敏伶","杜煥昌"]},{"no":31,"name":"預備桌","guests":[]},{"no":33,"name":"58期2","guests":["張元嘉","張銀珏","李柏毅","陳雅萍","盧本承","簡亦妤","施惠慈","施惠慈老公","施惠慈寶寶","陳玠安"]}];
 
 /* ================= 場地幾何（座標取自飯店平面圖 PDF） ================= */
 const GEO = {
-  tables: { /* no:[x,y,r] */
-    1:[443.7,393.3,14.2], 2:[419.1,425.6,10.75], 3:[377.7,425.9,10.75], 5:[333.5,425.9,10.75],
-    6:[289.1,425.9,10.75], 7:[248.6,425.6,10.75], 8:[205.4,425.0,10.75], 9:[167.8,426.9,10.75],
-    10:[101.8,416.2,10.75], 11:[398.0,393.4,10.75], 12:[357.0,394.2,10.75], 13:[310.5,393.4,10.75],
-    14:[269.3,392.4,10.75], 15:[227.8,393.3,10.75], 16:[189.4,392.7,10.75], 17:[149.5,391.0,10.75],
-    18:[420.0,335.7,10.75], 19:[384.5,336.0,10.75], 20:[338.1,335.7,10.75], 21:[301.2,336.0,10.75],
-    22:[265.9,335.8,10.75], 23:[224.9,333.6,10.75], 24:[191.0,332.6,10.75], 25:[153.5,332.1,10.75],
-    26:[92.1,358.0,10.75], 27:[111.1,324.1,10.75], 28:[432.2,285.6,10.75], 29:[392.7,278.1,10.75]
+  tables: { /* no:[x,y,r]  依 32桌桌圖.jpg + Google Sheet 桌號校正；已隱藏 9/10/17/27/30/32 */
+    1:[438.0,395.2,14.2], 2:[412.8,425.6,10.75], 3:[374.0,425.3,10.75], 5:[336.7,426.4,10.75],
+    6:[295.2,426.1,10.75], 7:[252.1,424.4,10.75], 8:[209.5,425.5,10.75], 11:[391.1,390.7,10.75],
+    12:[353.6,390.4,10.75], 13:[313.7,391.5,10.75], 14:[271.9,389.8,10.75], 15:[231.7,389.5,10.75],
+    16:[189.1,390.6,10.75], 18:[425.2,336.7,10.75], 19:[383.7,336.4,10.75], 20:[347.5,336.1,10.75],
+    21:[307.1,334.4,10.75], 22:[264.4,335.5,10.75], 23:[224.3,335.2,10.75], 24:[186.8,335.0,10.75],
+    25:[146.6,334.7,10.75], 26:[106.2,324.7,10.75], 28:[431.3,292.2,10.75], 29:[390.5,279.4,10.75],
+    31:[293.8,277.3,10.75], 33:[207.2,287.8,10.75]
   },
-  corridors: { B:{y:445,x0:96,x1:455}, M:{y:409.7,x0:96,x1:455}, C:{y:363.8,x0:112,x1:466}, T:{y:309,x0:390.7,x1:446} },
-  links: [ ["B","M",[126,134.8,186.6,227,268.9,311.3,355.6,398.4,441]],
-           ["M","C",[126,169.5,208.6,248.6,289.9,333.8,377.5,420.9]],
-           ["C","T",[402.3,440]] ],
-  weights: { B:1, M:2.2, C:0.45, T:1 },   /* 紅毯為主動脈、避免穿窄走道 */
-  entrance: {x:150, y:468, joinY:445},
-  /* 各桌停靠走道與接近路徑 */
+  corridors: { B:{y:445,x0:126,x1:418}, M:{y:409.7,x0:126,x1:446}, C:{y:363.8,x0:100,x1:466}, T:{y:308,x0:200,x1:435} },
+  links: [ ["B","M",[126,187,230,273,316,355,393]],
+           ["M","C",[126,168,210,251,292,333,372,414]],
+           ["C","T",[205,285,365,404]] ],
+  weights: { B:1, M:2.2, C:0.45, T:1 },   /* 紅毯為主動脈 */
+  entrance: {x:150, y:470, joinY:445},
   approach: {
-    1:{c:"C",ax:443.7,tail:[[443.7,376.6]]},
-    2:{c:"B",ax:419.1,tail:[[419.1,438.9]]}, 3:{c:"B",ax:377.7,tail:[[377.7,439.2]]},
-    5:{c:"B",ax:333.5,tail:[[333.5,439.2]]}, 6:{c:"B",ax:289.1,tail:[[289.1,439.2]]},
-    7:{c:"B",ax:248.6,tail:[[248.6,438.9]]}, 8:{c:"B",ax:205.4,tail:[[205.4,438.3]]},
-    9:{c:"B",ax:167.8,tail:[[167.8,440.2]]}, 10:{c:"B",ax:101.8,tail:[[101.8,429.5]]},
-    11:{c:"C",ax:398,tail:[[398,380.2]]}, 12:{c:"C",ax:357,tail:[[357,380.9]]},
-    13:{c:"C",ax:310.5,tail:[[310.5,380.2]]}, 14:{c:"C",ax:269.3,tail:[[269.3,379.2]]},
-    15:{c:"C",ax:227.8,tail:[[227.8,380.0]]}, 16:{c:"C",ax:189.4,tail:[[189.4,379.5]]},
-    17:{c:"C",ax:149.5,tail:[[149.5,377.8]]},
-    18:{c:"C",ax:420,tail:[[420,349.0]]}, 19:{c:"C",ax:384.5,tail:[[384.5,349.3]]},
-    20:{c:"C",ax:338.1,tail:[[338.1,349.0]]}, 21:{c:"C",ax:301.2,tail:[[301.2,349.3]]},
-    22:{c:"C",ax:265.9,tail:[[265.9,349.1]]}, 23:{c:"C",ax:224.9,tail:[[224.9,346.9]]},
-    24:{c:"C",ax:191,tail:[[191,345.9]]}, 25:{c:"C",ax:153.5,tail:[[153.5,345.4]]},
-    26:{c:"C",ax:114,tail:[[104.5,360.8]]},
-    27:{c:"C",ax:132.3,tail:[[132.3,324.1],[124.4,324.1]]},
-    28:{c:"T",ax:440,tail:[[435.8,298.2]]},
-    29:{c:"T",ax:392.7,tail:[[392.7,291.4]]}
+    1:{c:"C",ax:438.0,tail:[[438.0,383.2]]}, 2:{c:"B",ax:412.8,tail:[[412.8,437.6]]}, 3:{c:"B",ax:374.0,tail:[[374.0,437.3]]},
+    5:{c:"B",ax:336.7,tail:[[336.7,438.4]]}, 6:{c:"B",ax:295.2,tail:[[295.2,438.1]]}, 7:{c:"B",ax:252.1,tail:[[252.1,436.4]]},
+    8:{c:"B",ax:209.5,tail:[[209.5,437.5]]}, 11:{c:"C",ax:391.1,tail:[[391.1,378.7]]}, 12:{c:"C",ax:353.6,tail:[[353.6,378.4]]},
+    13:{c:"C",ax:313.7,tail:[[313.7,379.5]]}, 14:{c:"C",ax:271.9,tail:[[271.9,377.8]]}, 15:{c:"C",ax:231.7,tail:[[231.7,377.5]]},
+    16:{c:"C",ax:189.1,tail:[[189.1,378.6]]}, 18:{c:"C",ax:425.2,tail:[[425.2,350.7]]}, 19:{c:"C",ax:383.7,tail:[[383.7,350.4]]},
+    20:{c:"C",ax:347.5,tail:[[347.5,350.1]]}, 21:{c:"C",ax:307.1,tail:[[307.1,348.4]]}, 22:{c:"C",ax:264.4,tail:[[264.4,349.5]]},
+    23:{c:"C",ax:224.3,tail:[[224.3,349.2]]}, 24:{c:"C",ax:186.8,tail:[[186.8,349.0]]}, 25:{c:"C",ax:146.6,tail:[[146.6,348.7]]},
+    26:{c:"C",ax:126,tail:[[120,330],[106.2,324.7]]}, 28:{c:"T",ax:431.3,tail:[[431.3,303.2]]}, 29:{c:"T",ax:390.5,tail:[[390.5,290.4]]},
+    31:{c:"T",ax:293.8,tail:[[293.8,288.3]]}, 33:{c:"T",ax:207.2,tail:[[207.2,298.8]]}
   },
   wall: "M546.3 460.2 L487.5 460.2 487.5 459.1 469 459.1 469 460.2 444.5 460.2 390.5 460.2 390.5 459.1 372 459.1 372 460.2 347.5 460.2 293.5 460.2 293.5 459.1 275 459.1 275 460.2 196.5 460.2 196.5 459.1 178 459.1 178 460.2 150.7 460.2 126.2 460.2 98.9 460.2 98.9 459.1 91.1 459.1 91.1 438.1 88.4 438.1 88.4 438.6 84 438.6 78.5 412.3 73 383.4 68.1 354.5 65.8 340 65.7 328.2 68.9 316.9 75 306.8 83.6 298.8 94 293.4 107.3 288.9 134.1 280.6 161.2 273.3 188.6 267.1 216.3 261.9 244.1 257.8 272 254.8 300.1 252.9 328.2 252.1 356.3 252.4 384.3 253.8 412.3 256.2 440.2 259.7 467.9 264.4 495.4 270 522.7 276.8 548.3 284.1 546.3 289.8 Z",
   carpet:[123.9,355.7,341.7,16.1],
@@ -246,13 +244,17 @@ const GEO = {
 /* ================= 搜尋 ================= */
 const norm = s => (s||"").normalize("NFKC").toLowerCase().replace(/[\s()（）:：・·。.，,]/g,"");
 const GUESTS = [];
-TABLES.forEach(t => t.guests.forEach(g => {
-  const tokens = new Set([norm(g)]);
-  const paren = g.match(/[（(]([^（）()]+)[）)]/); if(paren) tokens.add(norm(paren[1]));
-  tokens.add(norm(g.replace(/[（(][^（）()]*[）)]/g,"")));
-  const colon = g.split(/[:：]/); if(colon.length>1) tokens.add(norm(colon[colon.length-1]));
-  GUESTS.push({name:g, no:t.no, tname:t.name, tokens:[...tokens].filter(Boolean)});
-}));
+TABLES.forEach(t => {
+  const cnt = {};
+  t.guests.forEach(g => cnt[g] = (cnt[g]||0)+1);
+  Object.entries(cnt).forEach(([g, seats]) => {
+    const tokens = new Set([norm(g)]);
+    const paren = g.match(/[（(]([^（）()]+)[）)]/); if(paren) tokens.add(norm(paren[1]));
+    tokens.add(norm(g.replace(/[（(][^（）()]*[）)]/g,"")));
+    const colon = g.split(/[:：]/); if(colon.length>1) tokens.add(norm(colon[colon.length-1]));
+    GUESTS.push({name:g, no:t.no, tname:t.name, seats, tokens:[...tokens].filter(Boolean)});
+  });
+});
 function search(qRaw){
   const q = norm(qRaw);
   if(!q) return [];
@@ -266,6 +268,7 @@ function search(qRaw){
     if(best>0) res.push({type:"guest", score:best, len:g.name.length, ...g});
   }
   for(const t of TABLES){
+    if(!t.guests.length) continue;
     if(String(t.no)===q || norm(t.name).includes(q))
       res.push({type:"table", score:3, len:0, no:t.no, tname:t.name, name:"第 "+t.no+" 桌"});
   }
@@ -342,16 +345,28 @@ function drawBase(targetNo){
     "font-size":9,fill:"#9FAAC7","writing-mode":"tb",style:"letter-spacing:3px"}).textContent="舞台";
   GEO.equip.forEach(([x,y])=>el("rect",{x,y,width:18.5,height:12.6,rx:1.5,fill:"#2A3D63"}));
   GEO.screens.forEach(([x1,x2])=>el("line",{x1,y1:459.5,x2,y2:459.5,stroke:"#55699A","stroke-width":3}));
-  /* 入口 */
+  /* 入口（路線起點，箭頭與動畫虛線重疊） */
   el("rect",{x:138,y:457.5,width:24,height:5,fill:"#18233F"});
-  el("path",{d:"M150 470 L150 452 M144 458 L150 451 L156 458",stroke:"#F2C94C","stroke-width":2,fill:"none","stroke-linecap":"round","stroke-linejoin":"round"});
-  el("text",{x:150,y:481,"text-anchor":"middle","font-size":10,fill:"#F2C94C","font-weight":"700"}).textContent="入口";
+  const eg=el("g",{});
+  const ering=el("circle",{cx:150,cy:466,r:5,fill:"none",stroke:"#F2C94C","stroke-width":1.4,opacity:.85},eg);
+  el("animate",{attributeName:"r",values:"4;11",dur:"1.7s",repeatCount:"indefinite"},ering);
+  el("animate",{attributeName:"opacity",values:"0.85;0",dur:"1.7s",repeatCount:"indefinite"},ering);
+  el("path",{d:"M150 470 L150 452 M144 458 L150 451 L156 458",stroke:"#F2C94C","stroke-width":2,fill:"none","stroke-linecap":"round","stroke-linejoin":"round"},eg);
+  el("text",{x:150,y:482,"text-anchor":"middle","font-size":10,fill:"#F2C94C","font-weight":"700"},eg).textContent="入口";
   el("text",{x:208,y:481,"text-anchor":"middle","font-size":8.5,fill:"#8FA3D1"}).textContent="收禮桌";
   el("rect",{x:188,y:470,width:40,height:5,rx:2,fill:"none",stroke:"#4A5E8C","stroke-width":.8});
-  /* 桌子 */
+  /* 桌子（依名單動態顯示） */
+  const ACTIVE={}; TABLES.forEach(t=>ACTIVE[t.no]=t);
   for(const no in GEO.tables){
+    if(!ACTIVE[no]) continue;
     const [x,y,r]=GEO.tables[no];
-    const isMain=no==="1", isTarget=+no===targetNo;
+    const isMain=no==="1", isTarget=+no===targetNo, isSpare=!ACTIVE[no].guests.length;
+    if(isSpare){
+      const g=el("g",{opacity:.55});
+      el("circle",{cx:x,cy:y,r,fill:"none",stroke:"#55699A","stroke-width":1,"stroke-dasharray":"3 3"},g);
+      el("text",{x,y:y+.5,"text-anchor":"middle","dominant-baseline":"central","font-size":7.5,fill:"#7E89A8"},g).textContent="備";
+      continue;
+    }
     const g=el("g",{});
     el("circle",{cx:x,cy:y,r,fill:isTarget?"#F2C94C":(isMain?"#E4647A":"#2E4168"),
       stroke:isTarget?"#D9A93C":(isMain?"#C94B62":"#6F84B5"),"stroke-width":isTarget?1.5:1},g);
@@ -398,7 +413,9 @@ function animateRoute(targetNo,force){
   route.setAttribute("stroke-dashoffset",L); route.setAttribute("stroke-dasharray",`${L} ${L}`);
   const Z={w:230,h:230*FULL.h/FULL.w};
   const start=performance.now();
-  const T0=700, T1=900, T2=Math.min(7000,Math.max(3800,L*14)), T3=900, T4=700, HOLD=900;
+  /* T0 全圖→ T1 鏡頭推近入口→ DEPART 在入口停頓脈動→ T2 沿線前進→ HOLD 抵達→ T3 拉回 */
+  const T0=700, T1=900, DEPART=750, T2=Math.min(7000,Math.max(3800,L*14)), HOLD=900, T3=900;
+  const P2=T0+T1, P3=P2+DEPART, P4=P3+T2, P5=P4+HOLD, P6=P5+T3;
   const target=GEO.tables[targetNo];
   function follow(px,py,w,h){const[vx,vy,vw,vh]=vbOf();
     const nx=px-w/2, ny=py-h/2.1;
@@ -407,20 +424,26 @@ function animateRoute(targetNo,force){
   function frame(now){
     const t=now-start;
     if(t<T0){ setVB(FULL.x,FULL.y,FULL.w,FULL.h); }
-    else if(t<T0+T1){ const p=ease((t-T0)/T1);
+    else if(t<P2){ const p=ease((t-T0)/T1);
       const w=FULL.w+(Z.w-FULL.w)*p, h=FULL.h+(Z.h-FULL.h)*p;
       const cx=FULL.x+FULL.w/2+(pts[0][0]-FULL.x-FULL.w/2)*p, cy=FULL.y+FULL.h/2+(pts[0][1]-FULL.y-FULL.h/2)*p;
       setVB(...clampVB(cx-w/2,cy-h/2,w,h));
       dot.setAttribute("opacity",1); dot.setAttribute("cx",pts[0][0]); dot.setAttribute("cy",pts[0][1]); }
-    else if(t<T0+T1+T2){ const p=ease((t-T0-T1)/T2);
+    else if(t<P3){ /* 在入口停頓：圓點脈動、路線尚未畫出，與入口箭頭重疊呈現 */
+      const k=(t-P2)/DEPART;
+      dot.setAttribute("r", 4.6+2*Math.sin(k*Math.PI));
+      dot.setAttribute("cx",pts[0][0]); dot.setAttribute("cy",pts[0][1]);
+      follow(pts[0][0],pts[0][1],Z.w,Z.h); }
+    else if(t<P4){ const p=ease((t-P3)/T2);
+      dot.setAttribute("r",4.6);
       const len=L*p, pt=route.getPointAtLength(len);
       route.setAttribute("stroke-dashoffset",L-len);
       dot.setAttribute("cx",pt.x); dot.setAttribute("cy",pt.y);
       follow(pt.x,pt.y,Z.w,Z.h); }
-    else if(t<T0+T1+T2+HOLD){ route.setAttribute("stroke-dashoffset",0);
+    else if(t<P5){ route.setAttribute("stroke-dashoffset",0);
       const pt=route.getPointAtLength(L); dot.setAttribute("cx",pt.x); dot.setAttribute("cy",pt.y);
       follow(target[0],target[1],Z.w*0.85,Z.h*0.85); }
-    else if(t<T0+T1+T2+HOLD+T3){ const p=ease((t-T0-T1-T2-HOLD)/T3);
+    else if(t<P6){ const p=ease((t-P5)/T3);
       const[vx,vy,vw,vh]=vbOf();
       const w=vw+(FULL.w-vw)*p, h=vh+(FULL.h-vh)*p;
       const x=vx+(FULL.x-vx)*p, y=vy+(FULL.y-vy)*p;
@@ -478,7 +501,7 @@ function render(list){
     h.textContent="請點選您的大名 ↓";sugg.appendChild(h);}
   list.forEach(item=>{
     const b=document.createElement("button");
-    b.innerHTML=`<span class="who">${item.name}</span><span class="where">第 ${item.no} 桌 · ${item.tname}</span>`;
+    b.innerHTML=`<span class="who">${item.name}${item.seats>1?` <span class="badge">×${item.seats}</span>`:""}</span><span class="where">第 ${item.no} 桌 · ${item.tname}</span>`;
     b.onclick=()=>go(item);
     sugg.appendChild(b);});
   sugg.classList.add("show");
@@ -502,13 +525,16 @@ function go(item){
   $("tableNo").textContent=item.no===1?"主桌":`第 ${item.no} 桌`;
   $("tableName").textContent=item.tname;
   $("tableName").style.display=item.no===1?"none":"inline-block";
+  $("seatInfo").textContent=item.seats>1?`♥ 此桌已為您保留 ${item.seats} 個座位`:"";
   show("result");
   requestAnimationFrame(()=>animateRoute(item.no));
 }
-$("backBtn").onclick=()=>{show("search");q.value="";sugg.classList.remove("show");q.focus();};
 $("replayBtn").onclick=()=>current&&animateRoute(current.no,true);
-$("fullBtn").onclick=()=>{cancelAnimationFrame(anim.raf);setVB(FULL.x,FULL.y,FULL.w,FULL.h);};
-if(CONFIG.lineUrl&&CONFIG.lineUrl!=="__LINE"+"_URL__"){const b=$("lineBtn");b.href=CONFIG.lineUrl;b.style.display="inline-flex";}
+$("backBtn").onclick=()=>{show("search");q.value="";sugg.classList.remove("show");q.focus();};
+if(CONFIG.lineUrl&&CONFIG.lineUrl!=="__LINE"+"_URL__"){
+  const b=$("lineBtn");b.href=CONFIG.lineUrl;b.style.display="inline-flex";
+  const b2=$("lineBtnResult");if(b2){b2.href=CONFIG.lineUrl;b2.style.display="inline-flex";}
+}
 </script>
 </body>
 </html>
