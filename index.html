@@ -91,7 +91,6 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
 .linebar{margin-top:auto;padding-top:28px;text-align:center}
 .linebtn{display:inline-flex;align-items:center;gap:8px;background:#06C755;color:#fff;font-weight:500;
   font-size:15px;padding:11px 22px;border-radius:999px;text-decoration:none;box-shadow:0 3px 12px rgba(6,199,85,.3)}
-.linebtn-result{align-self:center;margin-top:16px}
 .foot{margin-top:14px;font-size:12px;color:var(--muted);text-align:center;line-height:1.9}
 /* ---------- result ---------- */
 .back{display:inline-flex;align-items:center;gap:6px;border:none;background:none;color:var(--muted);
@@ -205,10 +204,13 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
     <button class="btnPrimary" id="backBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>重新搜尋</button>
   </div>
   <p class="note">沿著星光路線前進即可抵達 · 地圖可用雙指縮放</p>
-  <a class="linebtn linebtn-result" id="lineBtnResult" href="#" target="_blank" rel="noopener" style="display:none">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.64 2 10.13c0 4.03 3.55 7.4 8.34 8.04.33.07.77.22.88.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1 .88.55 1.08-.46 5.84-3.44 7.97-5.89C21.42 13.5 22 11.9 22 10.13 22 5.64 17.52 2 12 2z"/></svg>
-    加入婚禮官方 LINE
-  </a>
+  <div class="linebar">
+    <a class="linebtn" id="lineBtnResult" href="#" target="_blank" rel="noopener" style="display:none">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.64 2 10.13c0 4.03 3.55 7.4 8.34 8.04.33.07.77.22.88.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1 .88.55 1.08-.46 5.84-3.44 7.97-5.89C21.42 13.5 22 11.9 22 10.13 22 5.64 17.52 2 12 2z"/></svg>
+      加入婚禮官方 LINE
+    </a>
+    <p class="foot">「如果你馴服了我，我們就會彼此需要。<br>對我來說，你就是世界上的唯一；<br>對你來說，我也是世界上的唯一。」<br>——《小王子》</p>
+  </div>
 </div>
 
 </div>
