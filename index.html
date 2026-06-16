@@ -4,16 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>林鼎元 ♥ 陳蓓蓓 婚宴尋座</title>
-<meta name="description" content="2026.07.18 台北士林萬麗酒店宴會廳 — 輸入大名，星圖為您引路">
-<meta property="og:type" content="website">
-<meta property="og:title" content="林鼎元 ♥ 陳蓓蓓 婚宴尋座">
-<meta property="og:description" content="2026.07.18 台北士林萬麗酒店 · 輸入大名，星圖為您引路">
-<meta property="og:url" content="https://tylin-career.github.io/wedding-seat/">
-<meta property="og:image" content="https://tylin-career.github.io/wedding-seat/og.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%2316213E'/%3E%3Cpath d='M32 8Q35 26 56 32Q35 38 32 56Q29 38 8 32Q29 26 32 8Z' fill='%23F2C94C'/%3E%3C/svg%3E">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -66,15 +56,11 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
 .scene{display:block;width:100%;max-width:340px;margin:10px auto 0}
 .lead{text-align:center;font-size:16px;margin:0 0 14px;color:var(--ink);font-weight:500}
 .searchbox{position:relative}
-.searchbox input{width:100%;font-size:18px;padding:15px 48px;border:1.5px solid var(--line);
+.searchbox input{width:100%;font-size:18px;padding:15px 18px 15px 48px;border:1.5px solid var(--line);
   border-radius:14px;background:#1D2C4F;color:var(--ink);outline:none;font-family:inherit;
   box-shadow:0 4px 18px rgba(0,0,0,.25)}
 .searchbox input::placeholder{color:#7E89A8}
 .searchbox input:focus{border-color:var(--gold)}
-.searchbox .clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:36px;height:36px;
-  display:flex;align-items:center;justify-content:center;border:none;border-radius:50%;background:none;
-  color:var(--muted);cursor:pointer;padding:0}
-.searchbox .clear[hidden]{display:none}
 .searchbox .icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:20px;height:20px;color:var(--muted)}
 .hint{font-size:13px;color:var(--muted);text-align:center;margin-top:10px}
 .sugg{margin-top:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;
@@ -106,14 +92,16 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
 .mapBox{margin-top:14px;background:#18233F;border:1px solid var(--line);border-radius:18px;overflow:hidden;
   box-shadow:0 8px 28px rgba(0,0,0,.3);position:relative}
 .mapBox svg{display:block;width:100%;height:auto;touch-action:none;user-select:none}
-.ctrls{display:flex;gap:12px;margin-top:16px}
-.ctrls button{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;
+.ctrls{display:flex;gap:11px;margin-top:18px}
+.ctrls button{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;
   font-family:inherit;font-size:16px;font-weight:700;padding:15px 0;border-radius:14px;cursor:pointer;
-  transition:transform .08s}
-.ctrls button:active{transform:scale(0.97)}
-.ctrls button svg{flex:none}
-.btnPrimary{background:var(--gold);color:#1B2A4A;border:none;box-shadow:0 4px 16px rgba(242,201,76,.35)}
-.btnGhost{background:rgba(255,255,255,.04);color:var(--ink);border:1.5px solid var(--line)}
+  transition:transform .1s ease, box-shadow .2s ease, background .2s ease;-webkit-tap-highlight-color:transparent}
+.ctrls button:active{transform:scale(0.96)}
+.ctrls button svg{flex:none;opacity:.9}
+.btnPrimary{flex:1.25;background:var(--gold);color:#1B2A4A;border:1px solid #E8B844;box-shadow:0 5px 18px rgba(242,201,76,.4)}
+.btnPrimary:active{box-shadow:0 2px 9px rgba(242,201,76,.32)}
+.btnGhost{background:rgba(255,255,255,.05);color:var(--ink);border:1.5px solid var(--line)}
+.btnGhost:active{background:rgba(255,255,255,.09)}
 .note{font-size:12px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.7}
 .view{display:none}
 .view.active{display:flex;flex-direction:column;flex:1}
@@ -172,9 +160,6 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
   <div class="searchbox">
     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
     <input id="q" type="text" inputmode="text" autocomplete="off" placeholder="請輸入您的大名" aria-label="輸入姓名搜尋座位">
-    <button class="clear" id="clearBtn" type="button" aria-label="清除輸入" hidden>
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
-    </button>
   </div>
   <div class="sugg" id="sugg" role="listbox"></div>
   <p class="hint">輸入部分姓名即可，也可輸入桌號或桌名</p>
@@ -183,7 +168,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.64 2 10.13c0 4.03 3.55 7.4 8.34 8.04.33.07.77.22.88.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1 .88.55 1.08-.46 5.84-3.44 7.97-5.89C21.42 13.5 22 11.9 22 10.13 22 5.64 17.52 2 12 2z"/></svg>
       加入婚禮官方 LINE
     </a>
-    <p class="foot">找不到您的名字嗎？請洽入口收禮桌服務人員<br>“What is essential is invisible to the eye.” — <i>The Little Prince</i></p>
+    <p class="foot">找不到您的名字嗎？請洽入口收禮桌服務人員<br>「真正重要的東西，眼睛是看不見的」——《小王子》<br>林鼎元 · 陳蓓蓓 敬上</p>
   </div>
 </div>
 
@@ -200,8 +185,8 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
     <svg id="map" viewBox="58 245 504 262" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="宴會廳平面圖與前往座位的路線"></svg>
   </div>
   <div class="ctrls">
-    <button class="btnGhost" id="replayBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>重播路線</button>
-    <button class="btnPrimary" id="backBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>重新搜尋</button>
+    <button class="btnGhost" id="replayBtn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.87l11-6.5a1 1 0 0 0 0-1.74l-11-6.5A1 1 0 0 0 8 5.5z"/></svg>播放路線</button>
+    <button class="btnPrimary" id="backBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>重新搜尋</button>
   </div>
   <p class="note">沿著星光路線前進即可抵達 · 地圖可用雙指縮放</p>
   <div class="linebar">
@@ -209,7 +194,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.64 2 10.13c0 4.03 3.55 7.4 8.34 8.04.33.07.77.22.88.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1 .88.55 1.08-.46 5.84-3.44 7.97-5.89C21.42 13.5 22 11.9 22 10.13 22 5.64 17.52 2 12 2z"/></svg>
       加入婚禮官方 LINE
     </a>
-    <p class="foot">“If you tame me, then we shall need each other.<br>To me, you will be unique in all the world.<br>To you, I shall be unique in all the world.”<br>— <i>The Little Prince</i></p>
+    <p class="foot">「如果你馴服了我，我們就會彼此需要。」<br>——《小王子》</p>
   </div>
 </div>
 
@@ -223,7 +208,7 @@ const CONFIG = {
 };
 
 /* ================= 名單資料 ================= */
-const TABLES = [{"no":1,"name":"主桌","guests":["新郎林鼎元","新娘陳蓓蓓","新郎爸爸林久雄","新郎媽媽張幸敏","新娘爸爸陳炳章","新娘媽媽林麗芬","新郎舅舅","新郎乾爹陳聰裕","新郎乾媽張瓊瑤","新娘外婆","新娘二伯陳炳藝","新娘舅媽"]},{"no":2,"name":"女方親戚1","guests":["林湘婷","林韋凱","林韋嘉","二表嫂","表姪","表姪女","阿姨林麗珍","姨丈","新娘弟弟陳子捷","阿姨陳秋燕"]},{"no":3,"name":"女方長輩1","guests":["林雪如阿姨","許珀鳳阿姨","黃文伶阿姨","周志銘","劉惠惠老師","劉惠惠老師老公","劉惠惠老師小孩","胡淑梅老師","師丈曾繁昌","劉麗華阿姨"]},{"no":5,"name":"蓓蓓同事","guests":["林添進處長","朱美音專門委員","曾尤弘專門委員","王麗菁科長","許烱煌科長","劉家榮主任","王重陽主任","鍾志清輔導員","郭力瑋輔導員"]},{"no":6,"name":"蓓蓓同事","guests":["蘇靖雅","許立軒","何書雅","何書雅老公","簡思齊(男)","劉嘉良副座","劉嘉良副座家人","呂姵樺","張楷翊","曹宜琳"]},{"no":7,"name":"ASUS堅若磐石","guests":["謝曜陽 (Andy)","安安","張文和 (Fred)","張文和 (Fred)","胡高霖 (Avery)","黃柏鈞 (Baron)","Lucy","何紹綦 (Eric)","周昱呈 (Yuki)","周昱呈 (Yuki)","翁煒傑 (Eric)"]},{"no":8,"name":"曾經有一個團","guests":["吳明哲","鍾昀廷","廖宏成","蘇士哲","廖志豪","林書壘","劉承翰","劉承翰女友","何恭騰","江翰穎"]},{"no":11,"name":"7+男方家人","guests":["嫂爸","嫂媽","嫂妹","嫂妹男友","嫂嫂外婆","林晁立","吳若瑄","嫂嫂","張詠涵","張宸翌"]},{"no":12,"name":"女方親戚2","guests":["堂妹陳亮㚬","堂弟陳長牧","三伯陳炳榕","堂妹陳瑾萱","姑姑陳琳琳","姑丈丁治順","表弟丁士恆Joseph","表妹丁于珊Rachael","王明智","王明智老婆"]},{"no":13,"name":"蓓蓓同事","guests":["何銘津輔導員","何銘津輔導員老婆","林青瑾輔導員","黃靖雅","李易庭","葉恆甫","林怡妙","彭柏欽","林妤庭","杜立麒"]},{"no":14,"name":"金華國中","guests":["楊雅婷","胡景淳","陳庭㚬","徐國瑋","羅傑","林世揚","陳樂","廖育瑩","許維恩","許維恩"]},{"no":15,"name":"ASUS無與倫比","guests":["林文信 (Alan)","呂宛倫 (Lexi)","陳巧琪 (Cora)","蔡承家 (Peter)","蔡承家 (Peter)","楊雅竹 (Enya)","簡宜珊 (Vivian)","徐盈盈 (Eileen)","徐盈盈 (Eileen)","廖劭恩 (Stan)","黃可萱 (Kelly)"]},{"no":16,"name":"蓓蓓高中大學","guests":["李孟軒","陳儀芳","陳儀芳男友","楊子璇(璇璇)","楊子璇男友","張湘菱(小綠)","李宛真(小茶)","羅巧伶(小歪)","柯翔元(小柯)","果果"]},{"no":18,"name":"3+5","guests":["張錦勳","張錫媛","張令妮","張阿紫","絡腳","張滿理","蔡建華","尚善閔","尚廷禹","呂潔瑜","新郎外婆"]},{"no":19,"name":"1+4","guests":["陳世穎","吳昭儀","陳恩菲","陳綺恩","陳世諺","陳昱璇","蔡坤宏","張淑俐","阿隆","阿隆媽"]},{"no":20,"name":"男方親友","guests":["三姑林素敏","二伯母蔡麗華","五嬸陳守真","林靜緹","林懋元","林懋元","吳亮雲","楊品宸","楊振承","楊振承"]},{"no":21,"name":"男方親友","guests":["張俊明","張俊明","湯育存 (小偉)","楊坤燦","楊坤燦","黃明雄","鄭麗娜","鄭麗娜","施茂雄醫師","楊適"]},{"no":22,"name":"58期1","guests":["吳益安","黃新嵐","呂佳曄","劉峻愷","張宜晴","邱鵲霙","施雨欣","王翊軒","郭加寧(nini)","許恬寧","許恬寧老公"]},{"no":23,"name":"58期4","guests":["徐芳禧","林柏旭","林秀俊","郭建廷","鐘奕東","陳欣汝","陳欣汝老公","陳鷖人","劉方","阮思齊(女)"]},{"no":24,"name":"58期3","guests":["黃弘岳","蔡長諺","張鉯喬","岳安洋","劉耀中","莊逸鈞","簡以剛","李欣庭","胖胖"]},{"no":25,"name":"狼殺團","guests":["陳依婷","林信宗","唐宏宇","黃韻庭","張廷謙","張廷謙女友","吳舜豪","吳舜豪老婆","吳昌鴻","陳祈銘(東東)","西西"]},{"no":26,"name":"懷特、高考","guests":["邱楊浩 (James)","林愛萍","陳奕欣 (Johnny)","林薪逢 (西風)","李昊禹 (Lavine)","郭承翰","洪祥銘","洪祥銘女友","鄭少鈞","梁竹君"]},{"no":28,"name":"6+沛森+宏益","guests":["陳秀梅","洪世英","謝立雄","協理：陳明堂","副理：王宏元","業務：張世杰","蔡貴霖","張羽蓉","蔡佳彤","蔡杰恩"]},{"no":29,"name":"福智觀功念恩","guests":["周秀麗","花春雄","余世香","林立茱","于榮琴","游素珠","蕭敏伶","杜煥昌"]},{"no":31,"name":"預備桌","guests":[]},{"no":33,"name":"58期2","guests":["張元嘉","張銀珏","李柏毅","陳雅萍","盧本承","簡亦妤","施惠慈","施惠慈老公","施惠慈寶寶","陳玠安"]}];
+const TABLES = [{"no":1,"name":"1","guests":["新郎林鼎元","新娘陳蓓蓓","新郎爸爸林久雄","新郎媽媽張幸敏","新娘爸爸陳炳章","新娘媽媽林麗芬","新郎舅舅","新郎乾爹陳聰裕","新郎乾媽張瓊瑤","新娘外婆","新娘二伯陳炳藝","新娘舅媽"]},{"no":2,"name":"2","guests":["林湘婷","林韋凱","林韋嘉","二表嫂","表姪","表姪女","阿姨林麗珍","姨丈","新娘弟弟陳子捷","阿姨陳秋燕"]},{"no":3,"name":"3","guests":["林雪如阿姨","許珀鳳阿姨","黃文伶阿姨","周志銘","劉惠惠老師","劉惠惠老師老公","劉惠惠老師小孩","胡淑梅老師","師丈曾繁昌","劉麗華阿姨"]},{"no":5,"name":"5","guests":["林添進處長","朱美音專門委員","曾尤弘專門委員","王麗菁科長","許烱煌科長","劉家榮主任","王重陽主任","鍾志清輔導員","郭力瑋輔導員"]},{"no":6,"name":"6","guests":["蘇靖雅","許立軒","何書雅","何書雅老公","簡思齊(男)","劉嘉良副座","劉嘉良副座家人","呂姵樺","張楷翊","曹宜琳"]},{"no":7,"name":"7","guests":["謝曜陽 (Andy)","安安","張文和 (Fred)","張文和 (Fred)","胡高霖 (Avery)","黃柏鈞 (Baron)","Lucy","何紹綦 (Eric)","周昱呈 (Yuki)","周昱呈 (Yuki)","翁煒傑 (Eric)"]},{"no":8,"name":"8","guests":["吳明哲","鍾昀廷","廖宏成","蘇士哲","廖志豪","郭承翰","洪祥銘","洪祥銘女友","鄭少鈞","梁竹君","謝亞修"]},{"no":11,"name":"11","guests":["嫂爸","嫂媽","嫂妹","嫂妹男友","嫂嫂外婆","林晁立","吳若瑄","嫂嫂","張詠涵","張宸翌"]},{"no":12,"name":"12","guests":["堂妹陳亮㚬","堂弟陳長牧","三伯陳炳榕","堂妹陳瑾萱","姑姑陳琳琳","姑丈丁治順","表弟丁士恆Joseph","表妹丁于珊Rachael","王明智","王明智老婆"]},{"no":13,"name":"13","guests":["何銘津輔導員","何銘津輔導員老婆","林青瑾輔導員","黃靖雅","李易庭","葉恆甫","林怡妙","彭柏欽","林妤庭","杜立麒"]},{"no":14,"name":"14","guests":["楊雅婷","胡景淳","陳庭㚬","徐國瑋","羅傑","林世揚","陳樂","廖育瑩","許維恩","許維恩"]},{"no":15,"name":"15","guests":["林文信 (Alan)","呂宛倫 (Lexi)","陳巧琪 (Cora)","蔡承家 (Peter)","蔡承家 (Peter)","楊雅竹 (Enya)","簡宜珊 (Vivian)","徐盈盈 (Eileen)","徐盈盈 (Eileen)","廖劭恩 (Stan)","黃可萱 (Kelly)"]},{"no":16,"name":"16","guests":["李孟軒","陳儀芳","陳儀芳男友","楊子璇(璇璇)","楊子璇男友","張湘菱(小綠)","李宛真(小茶)","羅巧伶(小歪)","柯翔元(小柯)","果果"]},{"no":18,"name":"18","guests":["張錦勳","張錫媛","張令妮","張阿紫","絡腳","張滿理","蔡建華","尚善閔","尚廷禹","呂潔瑜","新郎外婆"]},{"no":19,"name":"19","guests":["陳世穎","吳昭儀","陳恩菲","陳綺恩","陳世諺","陳昱璇","蔡坤宏","張淑俐","阿隆","阿隆媽"]},{"no":20,"name":"20","guests":["三姑林素敏","二伯母蔡麗華","五嬸陳守真","林靜緹","堂哥林懋元","堂哥林懋元","吳亮雲","楊品宸","楊振承醫生","楊振承醫生"]},{"no":21,"name":"21","guests":["張俊明","湯育存 (小偉)","楊坤燦","楊坤燦","鄭麗娜","鄭麗娜","施茂雄醫師","楊適","林民權","林民權"]},{"no":22,"name":"22","guests":["吳益安","黃新嵐","呂佳曄","劉峻愷","張宜晴","邱鵲霙","施雨欣","王翊軒","郭加寧(nini)","許恬寧","許恬寧老公"]},{"no":23,"name":"23","guests":["徐芳禧","林柏旭","林秀俊","郭建廷","鐘奕東","陳欣汝","陳欣汝老公","陳鷖人","劉方","阮思齊(女)"]},{"no":24,"name":"24","guests":["黃弘岳","蔡長諺","張鉯喬","岳安洋","劉耀中","莊逸鈞","簡以剛","李欣庭","胖胖"]},{"no":25,"name":"25","guests":["陳依婷","林信宗","唐宏宇","黃韻庭","張廷謙","張廷謙女友","吳舜豪","吳舜豪老婆","吳昌鴻","陳祈銘(東東)","西西"]},{"no":26,"name":"26","guests":["邱楊浩 (James)","林愛萍","陳奕欣 (Johnny)","林薪逢 (西風)","李昊禹 (Lavine)","Vina","劉承翰","劉承翰","何恭騰","江翰穎"]},{"no":28,"name":"28","guests":["陳秀梅","洪世英","謝立雄","陳明堂協理","王宏元副理","張世杰業務","蔡貴霖","張羽蓉","蔡佳彤","蔡杰恩"]},{"no":29,"name":"29","guests":["周秀麗","花春雄","余世香","林立茱","于榮琴","游素珠","蕭敏伶","杜煥昌"]},{"no":31,"name":"31","guests":[]},{"no":33,"name":"33","guests":["張元嘉","張銀珏","李柏毅","陳雅萍","盧本承","簡亦妤","施惠慈","施惠慈老公","施惠慈寶寶","陳玠安"]}];
 
 /* ================= 場地幾何（座標取自飯店平面圖 PDF） ================= */
 const GEO = {
@@ -418,13 +403,6 @@ const ease=t=>t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
 function animateRoute(targetNo,force){
   cancelAnimationFrame(anim.raf);
   drawBase(targetNo);
-  if(!GEO.tables[targetNo]||!GEO.approach[targetNo]){
-    /* 名單有此桌但缺地圖座標：優雅退場，只顯示全場圖與提示，不讓結果頁壞掉 */
-    console.warn("[尋座] 第 "+targetNo+" 桌缺少 GEO.tables / GEO.approach 座標，無法繪製路線");
-    setVB(FULL.x,FULL.y,FULL.w,FULL.h);
-    document.getElementById("walkInfo").textContent="平面圖路線準備中，現場服務人員將為您帶位";
-    return;
-  }
   const pts=buildPath(targetNo);
   const d=roundedPathD(pts);
   const route=el("path",{d,fill:"none",stroke:"#F2C94C","stroke-width":3.2,
@@ -435,7 +413,7 @@ function animateRoute(targetNo,force){
     `從入口出發，約 ${Math.max(5,Math.round(L*CONFIG.mPerPt))} 公尺的小旅行`;
   if(reduceMotion&&!force){ setVB(FULL.x,FULL.y,FULL.w,FULL.h); dot.setAttribute("opacity",1);
     const p=route.getPointAtLength(L); dot.setAttribute("cx",p.x); dot.setAttribute("cy",p.y);
-    document.getElementById("walkInfo").textContent+="（點「重播路線」可觀看動畫）"; return; }
+    document.getElementById("walkInfo").textContent+="（點「播放路線」可觀看動畫）"; return; }
   route.setAttribute("stroke-dashoffset",L); route.setAttribute("stroke-dasharray",`${L} ${L}`);
   const Z={w:230,h:230*FULL.h/FULL.w};
   const start=performance.now();
@@ -527,70 +505,39 @@ function render(list){
     h.textContent="請點選您的大名 ↓";sugg.appendChild(h);}
   list.forEach(item=>{
     const b=document.createElement("button");
-    b.innerHTML=`<span class="who">${item.name}${item.seats>1?` <span class="badge">×${item.seats}</span>`:""}</span><span class="where">第 ${item.no} 桌 · ${item.tname}</span>`;
+    b.innerHTML=`<span class="who">${item.name}${item.seats>1?` <span class="badge">×${item.seats}</span>`:""}</span><span class="where">第 ${item.no} 桌${item.tname&&item.tname!==String(item.no)?` · ${item.tname}`:""}</span>`;
     b.onclick=()=>go(item);
     sugg.appendChild(b);});
   sugg.classList.add("show");
 }
 let autoT=null;
-const clearBtn=$("clearBtn");
-const syncClear=()=>{clearBtn.hidden=!q.value;};
-clearBtn.onclick=()=>{clearTimeout(autoT);q.value="";syncClear();render([]);q.focus();};
 q.addEventListener("input",()=>{
   clearTimeout(autoT);
-  syncClear();
   const list=search(q.value);
   render(list);
-  /* 打完整姓名且唯一命中 → 自動帶位 */
   const nq=norm(q.value);
   const exact=list.filter(r=>r.type==="guest"&&r.tokens&&r.tokens.includes(nq));
   if(nq.length>=2&&exact.length===1&&list.filter(r=>r.type==="guest").length===1)
     autoT=setTimeout(()=>go(exact[0]),600);
 });
-q.addEventListener("keydown",e=>{if(e.key==="Enter"){const r=search(q.value);if(r.length)go(r[0]);}}); /* Enter 直接帶第一筆（排序已把最佳結果放最前） */
+q.addEventListener("keydown",e=>{if(e.key==="Enter"){const r=search(q.value);if(r.length===1)go(r[0]);}});
 function go(item){
   clearTimeout(autoT);
   current=item;
   $("greet").innerHTML=item.type==="table"?`您查詢的是`:`<b>${item.name}</b>　您好，您的座位在`;
   $("tableNo").textContent=item.no===1?"主桌":`第 ${item.no} 桌`;
   $("tableName").textContent=item.tname;
-  $("tableName").style.display=item.no===1?"none":"inline-block";
+  $("tableName").style.display=(item.tname&&item.tname!==String(item.no)&&item.no!==1)?"inline-block":"none";
   $("seatInfo").textContent=item.seats>1?`♥ 此桌已為您保留 ${item.seats} 個座位`:"";
   show("result");
   requestAnimationFrame(()=>animateRoute(item.no));
 }
 $("replayBtn").onclick=()=>current&&animateRoute(current.no,true);
-$("backBtn").onclick=()=>{show("search");q.value="";syncClear();sugg.classList.remove("show");q.focus();};
+$("backBtn").onclick=()=>{show("search");q.value="";sugg.classList.remove("show");q.focus();};
 if(CONFIG.lineUrl&&CONFIG.lineUrl!=="__LINE"+"_URL__"){
   const b=$("lineBtn");b.href=CONFIG.lineUrl;b.style.display="inline-flex";
   const b2=$("lineBtnResult");if(b2){b2.href=CONFIG.lineUrl;b2.style.display="inline-flex";}
 }
-
-/* ================= URL 深連結 =================
-   座位卡 / 喜帖 QR code 可用 ?q=姓名 或 ?t=桌號 直接帶位，
-   例：https://…/?q=林湘婷 、 https://…/?t=7 */
-function handleDeepLink(qs){
-  const sp=new URLSearchParams(qs);
-  const tNo=(sp.get("t")||"").trim(), kw=(sp.get("q")||"").trim();
-  if(tNo){
-    const tb=TABLES.find(x=>String(x.no)===tNo&&x.guests.length);
-    if(tb){go({type:"table",no:tb.no,tname:tb.name,name:"第 "+tb.no+" 桌"});return true;}
-  }
-  if(kw){
-    q.value=kw;syncClear();
-    const list=search(kw), nq=norm(kw);
-    const exact=list.filter(r=>r.type==="guest"&&r.tokens&&r.tokens.includes(nq));
-    if(exact.length===1){go(exact[0]);return true;}
-    if(list.length===1){go(list[0]);return true;}
-    render(list); /* 多筆候選：帶入關鍵字並顯示清單讓賓客點選 */
-  }
-  return false;
-}
-handleDeepLink(location.search);
-
-/* ================= 離線快取（宴會廳弱網時仍可開啟） ================= */
-if("serviceWorker" in navigator)
-  addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 </script>
 </body>
 </html>
