@@ -103,6 +103,14 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
 .btnGhost{background:rgba(255,255,255,.05);color:var(--ink);border:1.5px solid var(--line)}
 .btnGhost:active{background:rgba(255,255,255,.09)}
 .note{font-size:12px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.7}
+.langtog{position:absolute;top:18px;right:18px;z-index:6;display:flex;align-items:stretch;
+  background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:999px;overflow:hidden;
+  cursor:pointer;font-family:inherit;font-weight:700;font-size:12px;padding:0;-webkit-tap-highlight-color:transparent}
+.langtog span{padding:5px 11px;color:var(--muted);line-height:1.5}
+.langtog .lt-zh{color:#1B2A4A;background:var(--gold)}
+.langtog .lt-en{color:var(--muted)}
+.langtog.en .lt-zh{color:var(--muted);background:transparent}
+.langtog.en .lt-en{color:#1B2A4A;background:var(--gold)}
 .view{display:none}
 .view.active{display:flex;flex-direction:column;flex:1}
 @media (min-width:560px){ .hero h1{font-size:44px} }
@@ -110,13 +118,14 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
 </head>
 <body>
 <div class="wrap">
+<button class="langtog" id="langTog" aria-label="切換語言 / Switch language"><span class="lt-zh">中</span><span class="lt-en">EN</span></button>
 
 <!-- ============ 搜尋頁 ============ -->
 <div class="view active" id="viewSearch">
   <div class="hero">
     <div class="date"><span class="spark">✦</span><span class="dt">2026 · 07 · 18</span><span class="spark">✦</span></div>
     <h1 class="serif">林鼎元<span class="amp serif">&</span>陳蓓蓓</h1>
-    <div class="venue">台北士林萬麗酒店 · 宴會廳</div>
+    <div class="venue" data-i18n="venue">台北士林萬麗酒店 · 宴會廳</div>
     <div class="venue-en">RENAISSANCE TAIPEI SHIHLIN</div>
     <svg class="scene" viewBox="0 0 360 134" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <g fill="#F2C94C"><circle cx="22" cy="18" r="1.4"/><circle cx="58" cy="40" r="1"/><circle cx="120" cy="14" r="1.2"/><circle cx="168" cy="44" r="1"/><circle cx="205" cy="16" r="1.3"/><circle cx="250" cy="38" r="1"/><circle cx="300" cy="12" r="1.2"/><circle cx="90" cy="58" r="1"/><circle cx="270" cy="60" r="1.1"/><circle cx="184" cy="74" r="1"/></g>
@@ -156,19 +165,19 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
       </g>
     </svg>
   </div>
-  <p class="lead serif">歡迎降落，請輸入大名，星圖為您引路</p>
+  <p class="lead serif" data-i18n="lead">歡迎降落，請輸入大名，星圖為您引路</p>
   <div class="searchbox">
     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-    <input id="q" type="text" inputmode="text" autocomplete="off" placeholder="請輸入您的大名" aria-label="輸入姓名搜尋座位">
+    <input id="q" type="text" inputmode="text" autocomplete="off" placeholder="請輸入您的大名" data-i18n-ph="ph" aria-label="輸入姓名搜尋座位">
   </div>
   <div class="sugg" id="sugg" role="listbox"></div>
-  <p class="hint">輸入部分姓名即可，也可輸入桌號或桌名</p>
+  <p class="hint" data-i18n="hint">輸入部分姓名即可，也可輸入桌號或桌名</p>
   <div class="linebar">
     <a class="linebtn" id="lineBtn" href="#" target="_blank" rel="noopener" style="display:none">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.64 2 10.13c0 4.03 3.55 7.4 8.34 8.04.33.07.77.22.88.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1 .88.55 1.08-.46 5.84-3.44 7.97-5.89C21.42 13.5 22 11.9 22 10.13 22 5.64 17.52 2 12 2z"/></svg>
-      加入婚禮官方 LINE
+      <span data-i18n="line">加入婚禮官方 LINE</span>
     </a>
-    <p class="foot">找不到您的名字嗎？請洽入口收禮桌服務人員<br>「真正重要的東西，眼睛是看不見的」——《小王子》<br>林鼎元 · 陳蓓蓓 敬上</p>
+    <p class="foot" data-i18n-html="footSearch">找不到您的名字嗎？請洽入口收禮桌服務人員<br>「真正重要的東西，眼睛是看不見的」——《小王子》<br>林鼎元 · 陳蓓蓓 敬上</p>
   </div>
 </div>
 
@@ -185,16 +194,16 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
     <svg id="map" viewBox="58 245 504 262" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="宴會廳平面圖與前往座位的路線"></svg>
   </div>
   <div class="ctrls">
-    <button class="btnPrimary" id="backBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>重新搜尋</button>
-    <button class="btnGhost" id="replayBtn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.87l11-6.5a1 1 0 0 0 0-1.74l-11-6.5A1 1 0 0 0 8 5.5z"/></svg>播放路線</button>
+    <button class="btnPrimary" id="backBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg><span data-i18n="back">重新搜尋</span></button>
+    <button class="btnGhost" id="replayBtn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.87l11-6.5a1 1 0 0 0 0-1.74l-11-6.5A1 1 0 0 0 8 5.5z"/></svg><span data-i18n="play">播放路線</span></button>
   </div>
-  <p class="note">沿著星光路線前進即可抵達 · 地圖可用雙指縮放</p>
+  <p class="note" data-i18n="note">沿著星光路線前進即可抵達 · 地圖可用雙指縮放</p>
   <div class="linebar">
     <a class="linebtn" id="lineBtnResult" href="#" target="_blank" rel="noopener" style="display:none">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.64 2 10.13c0 4.03 3.55 7.4 8.34 8.04.33.07.77.22.88.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1 .88.55 1.08-.46 5.84-3.44 7.97-5.89C21.42 13.5 22 11.9 22 10.13 22 5.64 17.52 2 12 2z"/></svg>
-      加入婚禮官方 LINE
+      <span data-i18n="line">加入婚禮官方 LINE</span>
     </a>
-    <p class="foot">「如果你馴服了我，我們就會彼此需要。」<br>——《小王子》</p>
+    <p class="foot" data-i18n-html="footQuote">「如果你馴服了我，我們就會彼此需要。」<br>——《小王子》</p>
   </div>
 </div>
 
@@ -206,6 +215,51 @@ const CONFIG = {
   lineUrl: "https://lin.ee/TLSvVsS",   // 婚禮官方 LINE 連結，留空則隱藏按鈕
   mPerPt: 0.0858             // PDF pt → 公尺（依舞台 732cm 長邊與 180cm 標準圓桌驗證）
 };
+
+/* ================= 中英雙語 ================= */
+let LANG = (()=>{try{return localStorage.getItem("wsLang")==="en"?"en":"zh";}catch(e){return "zh";}})();
+const I18N = {
+  venue:{zh:"台北士林萬麗酒店 · 宴會廳", en:"Renaissance Taipei Shihlin · Ballroom"},
+  lead:{zh:"歡迎降落，請輸入大名，星圖為您引路", en:"Welcome — type your name and the star map will guide you"},
+  ph:{zh:"請輸入您的大名", en:"Enter your name"},
+  hint:{zh:"輸入部分姓名即可，也可輸入桌號", en:"Type part of your name, or a table number"},
+  line:{zh:"加入婚禮官方 LINE", en:"Join our wedding LINE"},
+  footSearch:{zh:"找不到您的名字嗎？請洽入口收禮桌服務人員<br>「真正重要的東西，眼睛是看不見的」——《小王子》<br>林鼎元 · 陳蓓蓓 敬上",
+    en:"Can't find your name? Please ask our staff at the reception desk.<br>\"What is essential is invisible to the eye.\" — The Little Prince<br>With love, Derek &amp; Pei-Pei"},
+  back:{zh:"重新搜尋", en:"Search again"},
+  play:{zh:"播放路線", en:"Play route"},
+  note:{zh:"沿著星光路線前進即可抵達 · 地圖可用雙指縮放", en:"Follow the starlight path to your seat · pinch to zoom"},
+  footQuote:{zh:"「如果你馴服了我，我們就會彼此需要。」<br>——《小王子》",
+    en:"\"If you tame me, then we shall need each other.\"<br>— The Little Prince"},
+  searched:{zh:"您查詢的是", en:"You searched for"},
+  head:{zh:"主桌", en:"Head Table"}, headMap:{zh:"主桌", en:"VIP"},
+  tableN:{zh:no=>`第 ${no} 桌`, en:no=>`Table ${no}`},
+  greetTail:{zh:"　您好，您的座位在", en:", your seat is at"},
+  walk:{zh:m=>`從入口出發，約 ${m} 公尺的小旅行`, en:m=>`About ${m} m from the entrance`},
+  walkStatic:{zh:"（點「播放路線」可觀看動畫）", en:" (tap Play route to watch)"},
+  seats:{zh:n=>`♥ 此桌已為您保留 ${n} 個座位`, en:n=>`♥ ${n} seats reserved for you at this table`},
+  pickName:{zh:"請點選您的大名 ↓", en:"Tap your name ↓"},
+  noMatch:{zh:"查無資料，請試試其他寫法，或洽入口收禮桌服務人員", en:"No match. Try another spelling, or ask our staff."},
+  entrance:{zh:"入口", en:"Entrance"}, reception:{zh:"收禮桌", en:"Gifts"}, stage:{zh:"舞台", en:"Stage"}, spare:{zh:"備", en:"—"}
+};
+function t(k){const v=I18N[k]; return v?v[LANG]:k;}
+function fillResult(item){
+  $("greet").innerHTML = item.type==="table" ? t("searched") : `<b>${item.name}</b>${t("greetTail")}`;
+  $("tableNo").textContent = item.no===1 ? t("head") : t("tableN")(item.no);
+  $("tableName").textContent = item.tname;
+  $("tableName").style.display = (item.tname&&item.tname!==String(item.no)&&item.no!==1)?"inline-block":"none";
+  $("seatInfo").textContent = item.seats>1 ? t("seats")(item.seats) : "";
+}
+function applyLang(){
+  document.documentElement.lang = LANG==="en"?"en":"zh-Hant";
+  document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=t(el.dataset.i18n));
+  document.querySelectorAll("[data-i18n-ph]").forEach(el=>el.placeholder=t(el.dataset.i18nPh));
+  document.querySelectorAll("[data-i18n-html]").forEach(el=>el.innerHTML=t(el.dataset.i18nHtml));
+  const lt=document.getElementById("langTog"); if(lt) lt.classList.toggle("en",LANG==="en");
+  const ve=document.querySelector(".venue-en"); if(ve) ve.style.display=LANG==="en"?"none":"block";
+  if(document.getElementById("viewResult").classList.contains("active")&&current){ fillResult(current); animateRoute(current.no); }
+  if(document.getElementById("sugg").classList.contains("show")) render(search(q.value));
+}
 
 /* ================= 名單資料 ================= */
 const TABLES = [{"no":1,"name":"1","guests":["新郎","新娘","新郎爸爸","新郎媽媽","新娘爸爸陳炳章","新娘媽媽林麗芬","新郎舅舅","新郎乾爹","新郎乾媽","新娘外婆","新娘二伯陳炳藝","新娘舅媽"]},{"no":2,"name":"2","guests":["林湘婷","林韋凱","林韋嘉","二表嫂","表姪","表姪女","阿姨林麗珍","姨丈","新娘弟弟陳子捷","阿姨陳秋燕"]},{"no":3,"name":"3","guests":["林雪如阿姨","許珀鳳阿姨","黃文伶阿姨","周志銘","劉惠惠阿姨","劉惠惠阿姨老公","劉惠惠阿姨小孩","胡淑梅老師","師丈曾繁昌","劉麗華阿姨"]},{"no":5,"name":"5","guests":["林添進處長","朱美音專門委員","曾尤弘專門委員","王麗菁科長","許烱煌科長","郭力瑋輔導員","鍾志清輔導員","田鎮源","杜立麒","林妤庭"]},{"no":6,"name":"6","guests":["蘇靖雅","許立軒","何書雅","何書雅老公","簡思齊(男)","劉嘉良副座","劉嘉良副座家人","呂姵樺","張楷翊","曹宜琳"]},{"no":7,"name":"7","guests":["吳明哲","鍾昀廷","廖宏成","蘇士哲","廖志豪","郭承翰","洪祥銘","洪祥銘女友","鄭少鈞","梁竹君","謝亞修"]},{"no":8,"name":"8","guests":["陳依婷","林信宗","唐宏宇","黃韻庭","張廷謙","張廷謙女友","吳舜豪","吳舜豪老婆","陳祈銘(東東)","陳昕旻(西西)"]},{"no":9,"name":"9","guests":["陳世穎","吳昭儀","陳恩菲","陳綺恩","陳世諺","陳昱璇","蔡坤宏","張淑俐","阿隆","阿隆媽"]},{"no":10,"name":"10","guests":["堂妹陳亮㚬","堂弟陳長牧","三伯陳炳榕","堂妹陳瑾萱","姑姑陳琳琳","姑丈丁治順","表弟丁士恆Joseph","表妹丁于珊Rachael","王明智","王明智老婆"]},{"no":11,"name":"11","guests":["劉家榮主任","何銘津輔導員","何銘津輔導員老婆","林青瑾輔導員","王重陽主任","黃靖雅","李易庭","葉恆甫","林怡妙","彭柏欽"]},{"no":12,"name":"12","guests":["黃弘岳","蔡長諺","張鉯喬","岳安洋","劉耀中","莊逸鈞","簡以剛","李欣庭","胖胖"]},{"no":13,"name":"13","guests":["楊雅婷","胡景淳","陳庭㚬","徐國瑋","羅傑","林世揚","陳樂","廖育瑩","許維恩","張庭瑜"]},{"no":14,"name":"14","guests":["許恬寧","許恬寧老公","李孟軒","陳儀芳","陳儀芳男友","楊子璇","楊子璇男友","張湘菱","羅巧伶","柯翔元","果果"]},{"no":15,"name":"15","guests":["新郎哥哥","新郎嫂嫂","吳爸爸","吳媽媽","吳媽媽","吳媽媽","吳妹妹","吳妹妹","張詠涵","張宸翌"]},{"no":16,"name":"16","guests":["張錦勳","張錫媛","張令妮","張阿紫","絡腳","張滿理","蔡建華","尚善閔","尚廷禹","呂潔瑜","新郎外婆"]},{"no":17,"name":"17","guests":["張羽蓉","蔡貴霖","蔡佳彤","蔡杰恩","陳秀梅","洪世英","謝立雄","陳明堂協理","王宏元副理","張世杰業務"]},{"no":18,"name":"18","guests":["二伯母蔡麗華","三姑林素敏","五嬸陳守真","林靜緹","堂哥林懋元","堂哥林懋元","陳守中","楊適","楊適","邱幼松"]},{"no":19,"name":"19","guests":["吳益安","黃新嵐","呂佳曄","劉峻愷","張宜晴","邱鵲霙","施雨欣","王翊軒","郭加寧(nini)"]},{"no":20,"name":"20","guests":["徐芳禧","林柏旭","林秀俊","郭建廷","鐘奕東","陳欣汝","陳欣汝老公","陳鷖人","劉方","阮思齊(女)"]},{"no":21,"name":"21","guests":["林文信 (Alan)","呂宛倫 (Lexi)","陳巧琪 (Cora)","蔡承家 (Peter)","蔡承家 (Peter)","楊雅竹 (Enya)","簡宜珊 (Vivian)","徐盈盈 (Eileen)","徐盈盈 (Eileen)","翁煒傑 (Eric)"]},{"no":22,"name":"22","guests":["謝曜陽 (Andy)","謝曜陽 (Andy)","張文和 (Fred)","張文和 (Fred)","胡高霖 (Avery)","黃柏鈞 (Baron)","Lucy","何紹綦 (Eric)","周昱呈 (Yuki)","周昱呈 (Yuki)"]},{"no":23,"name":"23","guests":["陳奕欣 (Johnny)","林薪逢 (西風)","李昊禹 (Lavine)","Vina","劉承翰","劉承翰","何恭騰","江翰穎","廖劭恩 (Stan)","黃可萱 (Kelly)"]},{"no":24,"name":"24","guests":["湯育存 (小偉)","施茂雄醫師","楊振承醫生","楊振承醫生","吳亮雲","楊品宸","鄭麗娜","黃柏樺","林民權","張俊明"]},{"no":25,"name":"25","guests":["周秀麗","花春雄","余世香","林立茱","于榮琴","游素珠","蕭敏伶","杜煥昌"]},{"no":26,"name":"26","guests":["陳玠安","張元嘉","張銀珏","李柏毅","陳雅萍","盧本承","簡亦妤","施惠慈","施惠慈老公","施惠慈寶寶"]},{"no":27,"name":"27","guests":[]}];
@@ -346,7 +400,7 @@ function drawBase(targetNo){
   const [sx,sy,sw,sh]=GEO.stage;
   el("rect",{x:sx,y:sy,width:sw,height:sh,rx:3,fill:"#2A3D63",stroke:"#55699A","stroke-width":1});
   el("text",{x:sx+sw/2,y:sy+sh/2,"text-anchor":"middle","dominant-baseline":"central",
-    "font-size":9,fill:"#9FAAC7","writing-mode":"tb",style:"letter-spacing:3px"}).textContent="舞台";
+    "font-size":9,fill:"#9FAAC7","writing-mode":"tb",style:"letter-spacing:3px"}).textContent=t("stage");
   GEO.equip.forEach(([x,y])=>el("rect",{x,y,width:18.5,height:12.6,rx:1.5,fill:"#2A3D63"}));
   GEO.screens.forEach(([x1,x2])=>el("line",{x1,y1:459.5,x2,y2:459.5,stroke:"#55699A","stroke-width":3}));
   /* 入口（路線起點，箭頭與動畫虛線重疊） */
@@ -356,8 +410,8 @@ function drawBase(targetNo){
   el("animate",{attributeName:"r",values:"4;11",dur:"1.7s",repeatCount:"indefinite"},ering);
   el("animate",{attributeName:"opacity",values:"0.85;0",dur:"1.7s",repeatCount:"indefinite"},ering);
   el("path",{d:"M150 470 L150 452 M144 458 L150 451 L156 458",stroke:"#F2C94C","stroke-width":2,fill:"none","stroke-linecap":"round","stroke-linejoin":"round"},eg);
-  el("text",{x:150,y:482,"text-anchor":"middle","font-size":10,fill:"#F2C94C","font-weight":"700"},eg).textContent="入口";
-  el("text",{x:208,y:481,"text-anchor":"middle","font-size":8.5,fill:"#8FA3D1"}).textContent="收禮桌";
+  el("text",{x:150,y:482,"text-anchor":"middle","font-size":10,fill:"#F2C94C","font-weight":"700"},eg).textContent=t("entrance");
+  el("text",{x:208,y:481,"text-anchor":"middle","font-size":8.5,fill:"#8FA3D1"}).textContent=t("reception");
   el("rect",{x:188,y:470,width:40,height:5,rx:2,fill:"none",stroke:"#4A5E8C","stroke-width":.8});
   /* 桌子（依名單動態顯示） */
   const ACTIVE={}; TABLES.forEach(t=>ACTIVE[t.no]=t);
@@ -368,7 +422,7 @@ function drawBase(targetNo){
     if(isSpare){
       const g=el("g",{opacity:.55});
       el("circle",{cx:x,cy:y,r,fill:"none",stroke:"#55699A","stroke-width":1,"stroke-dasharray":"3 3"},g);
-      el("text",{x,y:y+.5,"text-anchor":"middle","dominant-baseline":"central","font-size":7.5,fill:"#7E89A8"},g).textContent="備";
+      el("text",{x,y:y+.5,"text-anchor":"middle","dominant-baseline":"central","font-size":7.5,fill:"#7E89A8"},g).textContent=t("spare");
       continue;
     }
     const g=el("g",{});
@@ -376,7 +430,7 @@ function drawBase(targetNo){
       stroke:isTarget?"#D9A93C":(isMain?"#C94B62":"#6F84B5"),"stroke-width":isTarget?1.5:1},g);
     el("text",{x,y:y+.5,"text-anchor":"middle","dominant-baseline":"central",
       "font-size":isMain?8.5:9.5,"font-weight":"700",
-      fill:isTarget?"#1B2A4A":(isMain?"#fff":"#D9E2F5")},g).textContent=isMain?"主桌":no;
+      fill:isTarget?"#1B2A4A":(isMain?"#fff":"#D9E2F5")},g).textContent=isMain?t("headMap"):no;
     if(isTarget){
       el("ellipse",{cx:x,cy:y,rx:r+7.5,ry:(r+7.5)*0.38,fill:"none",stroke:"#F2C94C","stroke-width":1.4,opacity:.9,transform:`rotate(-18 ${x} ${y})`},g);
       const ring=el("circle",{cx:x,cy:y,r:r+3,fill:"none",stroke:"#F2C94C","stroke-width":1.6,opacity:.9},g);
@@ -410,10 +464,10 @@ function animateRoute(targetNo,force){
   const dot=el("circle",{r:4.6,fill:"#fff",stroke:"#F2C94C","stroke-width":1.8,opacity:0});
   const L=route.getTotalLength();
   document.getElementById("walkInfo").textContent=
-    `從入口出發，約 ${Math.max(5,Math.round(L*CONFIG.mPerPt))} 公尺的小旅行`;
+    t("walk")(Math.max(5,Math.round(L*CONFIG.mPerPt)));
   if(reduceMotion&&!force){ setVB(FULL.x,FULL.y,FULL.w,FULL.h); dot.setAttribute("opacity",1);
     const p=route.getPointAtLength(L); dot.setAttribute("cx",p.x); dot.setAttribute("cy",p.y);
-    document.getElementById("walkInfo").textContent+="（點「播放路線」可觀看動畫）"; return; }
+    document.getElementById("walkInfo").textContent+=t("walkStatic"); return; }
   route.setAttribute("stroke-dashoffset",L); route.setAttribute("stroke-dasharray",`${L} ${L}`);
   const Z={w:230,h:230*FULL.h/FULL.w};
   const start=performance.now();
@@ -500,12 +554,12 @@ function show(view){$("viewSearch").classList.toggle("active",view==="search");
 function render(list){
   sugg.innerHTML="";
   if(!q.value.trim()){sugg.classList.remove("show");return;}
-  if(!list.length){sugg.innerHTML='<div class="none">查無資料，請試試其他寫法，或洽入口收禮桌服務人員</div>';}
+  if(!list.length){sugg.innerHTML='<div class="none">'+t("noMatch")+'</div>';}
   else{const h=document.createElement("div");h.className="none";h.style.cssText="padding:9px 16px;font-size:13px";
-    h.textContent="請點選您的大名 ↓";sugg.appendChild(h);}
+    h.textContent=t("pickName");sugg.appendChild(h);}
   list.forEach(item=>{
     const b=document.createElement("button");
-    b.innerHTML=`<span class="who">${item.name}${item.seats>1?` <span class="badge">×${item.seats}</span>`:""}</span><span class="where">第 ${item.no} 桌${item.tname&&item.tname!==String(item.no)?` · ${item.tname}`:""}</span>`;
+    b.innerHTML=`<span class="who">${item.name}${item.seats>1?` <span class="badge">×${item.seats}</span>`:""}</span><span class="where">${t("tableN")(item.no)}${item.tname&&item.tname!==String(item.no)?` · ${item.tname}`:""}</span>`;
     b.onclick=()=>go(item);
     sugg.appendChild(b);});
   sugg.classList.add("show");
@@ -524,16 +578,14 @@ q.addEventListener("keydown",e=>{if(e.key==="Enter"){const r=search(q.value);if(
 function go(item){
   clearTimeout(autoT);
   current=item;
-  $("greet").innerHTML=item.type==="table"?`您查詢的是`:`<b>${item.name}</b>　您好，您的座位在`;
-  $("tableNo").textContent=item.no===1?"主桌":`第 ${item.no} 桌`;
-  $("tableName").textContent=item.tname;
-  $("tableName").style.display=(item.tname&&item.tname!==String(item.no)&&item.no!==1)?"inline-block":"none";
-  $("seatInfo").textContent=item.seats>1?`♥ 此桌已為您保留 ${item.seats} 個座位`:"";
+  fillResult(item);
   show("result");
   requestAnimationFrame(()=>animateRoute(item.no));
 }
 $("replayBtn").onclick=()=>current&&animateRoute(current.no,true);
 $("backBtn").onclick=()=>{show("search");q.value="";sugg.classList.remove("show");q.focus();};
+$("langTog").onclick=()=>{LANG=LANG==="zh"?"en":"zh";try{localStorage.setItem("wsLang",LANG);}catch(e){}applyLang();};
+applyLang();
 if(CONFIG.lineUrl&&CONFIG.lineUrl!=="__LINE"+"_URL__"){
   const b=$("lineBtn");b.href=CONFIG.lineUrl;b.style.display="inline-flex";
   const b2=$("lineBtnResult");if(b2){b2.href=CONFIG.lineUrl;b2.style.display="inline-flex";}
