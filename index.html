@@ -257,7 +257,7 @@ function applyLang(){
   document.querySelectorAll("[data-i18n-html]").forEach(el=>el.innerHTML=t(el.dataset.i18nHtml));
   const lt=document.getElementById("langTog"); if(lt) lt.classList.toggle("en",LANG==="en");
   const ve=document.querySelector(".venue-en"); if(ve) ve.style.display=LANG==="en"?"none":"block";
-  if(document.getElementById("viewResult").classList.contains("active")&&current){ fillResult(current); animateRoute(current.no); }
+  if(document.getElementById("viewResult").classList.contains("active")&&current){ fillResult(current); animateRoute(current.no,false,true); }
   if(document.getElementById("sugg").classList.contains("show")) render(search(q.value));
 }
 
@@ -454,7 +454,7 @@ const clampVB=(x,y,w,h)=>{
   return [x,y,w,h];
 };
 const ease=t=>t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
-function animateRoute(targetNo,force){
+function animateRoute(targetNo,force,staticOnly){
   cancelAnimationFrame(anim.raf);
   drawBase(targetNo);
   const pts=buildPath(targetNo);
@@ -465,9 +465,9 @@ function animateRoute(targetNo,force){
   const L=route.getTotalLength();
   document.getElementById("walkInfo").textContent=
     t("walk")(Math.max(5,Math.round(L*CONFIG.mPerPt)));
-  if(reduceMotion&&!force){ setVB(FULL.x,FULL.y,FULL.w,FULL.h); dot.setAttribute("opacity",1);
+  if(staticOnly||(reduceMotion&&!force)){ setVB(FULL.x,FULL.y,FULL.w,FULL.h); dot.setAttribute("opacity",1);
     const p=route.getPointAtLength(L); dot.setAttribute("cx",p.x); dot.setAttribute("cy",p.y);
-    document.getElementById("walkInfo").textContent+=t("walkStatic"); return; }
+    if(!staticOnly) document.getElementById("walkInfo").textContent+=t("walkStatic"); return; }
   route.setAttribute("stroke-dashoffset",L); route.setAttribute("stroke-dasharray",`${L} ${L}`);
   const Z={w:230,h:230*FULL.h/FULL.w};
   const start=performance.now();
