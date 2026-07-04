@@ -115,9 +115,11 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
 .view.active{display:flex;flex-direction:column;flex:1}
 /* ---------- 菜單浮動鈕與彈窗 ---------- */
 .fab{position:fixed;right:18px;bottom:20px;z-index:30;width:56px;height:56px;border-radius:50%;
-  background:var(--gold);border:1px solid #E8B844;color:#1B2A4A;cursor:pointer;
+  background:var(--gold);border:1px solid #E8B844;color:#1B2A4A;cursor:pointer;touch-action:none;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
-  box-shadow:0 6px 20px rgba(242,201,76,.4),0 2px 8px rgba(0,0,0,.35);transition:transform .12s ease}
+  box-shadow:0 6px 20px rgba(242,201,76,.4),0 2px 8px rgba(0,0,0,.35);
+  transition:transform .12s ease, left .22s ease, top .22s ease}
+.fab.dragging{transition:none;cursor:grabbing;box-shadow:0 10px 28px rgba(242,201,76,.5),0 4px 12px rgba(0,0,0,.4)}
 .fab:active{transform:scale(0.9)}
 .fab .flabel{font-size:9px;font-weight:700;line-height:1}
 .modal{position:fixed;inset:0;z-index:40;display:none}
@@ -323,6 +325,38 @@ function renderMenu(){
 }
 function openMenu(){const m=document.getElementById("menuModal");if(m){m.classList.add("open");m.setAttribute("aria-hidden","false");}}
 function closeMenu(){const m=document.getElementById("menuModal");if(m){m.classList.remove("open");m.setAttribute("aria-hidden","true");}}
+function initFab(){
+  const fab=document.getElementById("menuFab"); if(!fab) return;
+  const M=14, SZ=56;
+  let placed=false;
+  const clampP=(x,y)=>[Math.max(M,Math.min(x,innerWidth-SZ-M)),Math.max(M,Math.min(y,innerHeight-SZ-M))];
+  function place(x,y,save){const[cx,cy]=clampP(x,y);
+    fab.style.left=cx+"px";fab.style.top=cy+"px";fab.style.right="auto";fab.style.bottom="auto";placed=true;
+    if(save)try{localStorage.setItem("wsFab",JSON.stringify([cx,cy]));}catch(e){}}
+  let saved=null; try{saved=JSON.parse(localStorage.getItem("wsFab"));}catch(e){}
+  if(saved&&saved.length===2) place(saved[0],saved[1],false);
+  let sx,sy,ox,oy,moved;
+  fab.addEventListener("pointerdown",e=>{
+    moved=false; const r=fab.getBoundingClientRect();
+    sx=e.clientX; sy=e.clientY; ox=r.left; oy=r.top;
+    try{fab.setPointerCapture(e.pointerId);}catch(err){}});
+  fab.addEventListener("pointermove",e=>{
+    if(sx===undefined) return;
+    const dx=e.clientX-sx, dy=e.clientY-sy;
+    if(!moved && Math.hypot(dx,dy)>8){moved=true; fab.classList.add("dragging");}
+    if(moved){e.preventDefault(); place(ox+dx,oy+dy,false);}});
+  function end(e){
+    if(sx===undefined) return;
+    fab.classList.remove("dragging");
+    if(!moved){ openMenu(); }
+    else { const r=fab.getBoundingClientRect();
+      const nx=(r.left+SZ/2 < innerWidth/2)?M:innerWidth-SZ-M;   // 吸附最近的左右邊
+      place(nx, r.top, true); }
+    sx=undefined;}
+  fab.addEventListener("pointerup",end);
+  fab.addEventListener("pointercancel",()=>{fab.classList.remove("dragging");sx=undefined;});
+  addEventListener("resize",()=>{if(placed){const r=fab.getBoundingClientRect();place(r.left,r.top,true);}});
+}
 function t(k){const v=I18N[k]; return v?v[LANG]:k;}
 function fillResult(item){
   $("greet").innerHTML = item.type==="table" ? t("searched") : `<b>${item.name}</b>${t("greetTail")}`;
@@ -668,7 +702,7 @@ $("backBtn").onclick=()=>{show("search");q.value="";sugg.classList.remove("show"
 $("langTog").onclick=()=>{LANG=LANG==="zh"?"en":"zh";try{localStorage.setItem("wsLang",LANG);}catch(e){}applyLang();};
 applyLang();
 renderMenu();
-$("menuFab").onclick=openMenu;
+initFab();
 $("menuClose").onclick=closeMenu;
 $("menuBackdrop").onclick=closeMenu;
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeMenu();});
