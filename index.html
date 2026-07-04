@@ -113,6 +113,38 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
 .langtog.en .lt-en{color:#1B2A4A;background:var(--gold)}
 .view{display:none}
 .view.active{display:flex;flex-direction:column;flex:1}
+/* ---------- 菜單浮動鈕與彈窗 ---------- */
+.fab{position:fixed;right:18px;bottom:20px;z-index:30;width:56px;height:56px;border-radius:50%;
+  background:var(--gold);border:1px solid #E8B844;color:#1B2A4A;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+  box-shadow:0 6px 20px rgba(242,201,76,.4),0 2px 8px rgba(0,0,0,.35);transition:transform .12s ease}
+.fab:active{transform:scale(0.9)}
+.fab .flabel{font-size:9px;font-weight:700;line-height:1}
+.modal{position:fixed;inset:0;z-index:40;display:none}
+.modal.open{display:block}
+.modal-backdrop{position:absolute;inset:0;background:rgba(8,12,24,.74)}
+.modal-panel{position:absolute;left:50%;bottom:0;width:100%;max-width:520px;max-height:88vh;
+  transform:translateX(-50%);background:linear-gradient(180deg,#1B2A4A,#16213E);
+  border:1px solid var(--line);border-bottom:none;border-radius:22px 22px 0 0;
+  box-shadow:0 -12px 44px rgba(0,0,0,.55);display:flex;flex-direction:column;animation:sheetUp .28s ease}
+@keyframes sheetUp{from{transform:translate(-50%,34px);opacity:.3}to{transform:translate(-50%,0);opacity:1}}
+.modal-close{position:absolute;top:14px;right:14px;z-index:2;width:34px;height:34px;border-radius:50%;
+  background:rgba(255,255,255,.08);border:1px solid var(--line);color:var(--muted);cursor:pointer;
+  display:flex;align-items:center;justify-content:center}
+.modal-grip{width:38px;height:4px;border-radius:2px;background:var(--line);margin:10px auto 0;flex:none}
+.modal-head{padding:12px 22px 4px;text-align:center;flex:none}
+.modal-head .mtitle{font-size:24px;font-weight:700;color:var(--gold)}
+.modal-head .msub{font-size:11px;letter-spacing:4px;color:#7E89A8;margin-top:2px}
+.modal-body{overflow-y:auto;padding:6px 22px 12px;-webkit-overflow-scrolling:touch}
+.mcourse{margin-top:18px}
+.mchead{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+.mchead .cz{color:var(--gold);font-weight:700;font-size:15px;letter-spacing:1px}
+.mchead .ce{color:#7E89A8;font-size:11px;font-style:italic}
+.mchead .ln{flex:1;height:1px;background:linear-gradient(90deg,rgba(242,201,76,.35),transparent)}
+.mdish{padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.mdish .dz{color:var(--ink);font-size:14.5px}
+.mdish .de{color:#8FA3D1;font-size:11.5px;margin-top:1px}
+.menu-note{text-align:center;color:#7E89A8;font-size:11px;padding:16px 22px 26px;flex:none}
 @media (min-width:560px){ .hero h1{font-size:44px} }
 </style>
 </head>
@@ -207,6 +239,24 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
   </div>
 </div>
 
+<button class="fab" id="menuFab" aria-label="宴會菜單 / Menu">
+  <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v5a2 2 0 0 0 4 0V3"/><path d="M8 8v13"/><path d="M16 3c-1.4 0-2.6 2-2.6 4.6S14.6 12 16 12"/><path d="M16 3v18"/></svg>
+  <span class="flabel" data-i18n="menuFab">菜單</span>
+</button>
+<div class="modal" id="menuModal" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="modal-backdrop" id="menuBackdrop"></div>
+  <div class="modal-panel">
+    <div class="modal-grip"></div>
+    <button class="modal-close" id="menuClose" aria-label="關閉 / Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="modal-head">
+      <div class="mtitle serif" data-i18n="menuTitle">宴會菜單</div>
+      <div class="msub">WEDDING MENU</div>
+    </div>
+    <div class="modal-body" id="menuBody"></div>
+    <div class="menu-note" data-i18n="menuNote">※ 菜色如有微調，以現場供應為準</div>
+  </div>
+</div>
+
 </div>
 
 <script>
@@ -240,8 +290,39 @@ const I18N = {
   seats:{zh:n=>`♥ 此桌已為您保留 ${n} 個座位`, en:n=>`♥ ${n} seats reserved for you at this table`},
   pickName:{zh:"請點選您的大名 ↓", en:"Tap your name ↓"},
   noMatch:{zh:"查無資料，請試試其他寫法，或洽入口收禮桌服務人員", en:"No match. Try another spelling, or ask our staff."},
-  entrance:{zh:"入口", en:"Entrance"}, reception:{zh:"收禮桌", en:"Gifts"}, stage:{zh:"舞台", en:"Stage"}, spare:{zh:"備", en:"—"}
+  entrance:{zh:"入口", en:"Entrance"}, reception:{zh:"收禮桌", en:"Gifts"}, stage:{zh:"舞台", en:"Stage"}, spare:{zh:"備", en:"—"},
+  menuTitle:{zh:"宴會菜單", en:"Wedding Menu"}, menuNote:{zh:"※ 菜色如有微調，以現場供應為準", en:"Menu may vary slightly on the day"},
+  menuFab:{zh:"菜單", en:"Menu"}
 };
+const MENU=[
+  {zh:"佐餐飲品",en:"Drinks",items:[
+    {zh:"席間果汁、軟性飲料無限暢飲",en:"Free flow of soft drinks & juice"},
+    {zh:"每桌特選紅酒兩瓶",en:"Two bottles of red wine per table"}]},
+  {zh:"前菜精選",en:"Appetiser",items:[
+    {zh:"明爐烤鴨佐紫蘇梅醬",en:"Roasted duck, perilla plum sauce"},
+    {zh:"窯烤龍眼蜜汁叉燒",en:"Honey-glazed longan BBQ pork"},
+    {zh:"金沙燈籠醬海蝦球",en:"Shrimp balls, salted egg yolk sauce"},
+    {zh:"玫瑰露香醉雞",en:"Marinated Shaoxing chicken"},
+    {zh:"熟成冷露美人茶栗子",en:"Oriental Beauty tea chestnuts"},
+    {zh:"花好月圓",en:"Sesame & peanut glutinous rice balls"}]},
+  {zh:"特色湯品",en:"Soup",items:[
+    {zh:"花膠北菇菜膽燉雞湯",en:"Fish maw & cabbage in chicken broth"}]},
+  {zh:"主菜",en:"Main",items:[
+    {zh:"金蒜銀絲蒸龍蝦",en:"Steamed lobster, glass noodles & garlic puree"},
+    {zh:"恆溫烹調美國雪花牛肋骨",en:"Slow-cooked American marbled beef short ribs"},
+    {zh:"碧綠玉帶子扒烏參",en:"Sautéed scallops & sea cucumber, oyster sauce"},
+    {zh:"私房豆豉欖菜醬蒸海石斑",en:"Steamed sea grouper, olive cabbage"},
+    {zh:"海鮮玉帶子炒飯",en:"Mullet roe & seafood fried rice"}]},
+  {zh:"甜品",en:"Dessert",items:[
+    {zh:"棗皇蓮子燉銀耳",en:"Stewed red dates, lotus seeds & white fungus"}]}
+];
+function renderMenu(){
+  const body=document.getElementById("menuBody"); if(!body) return;
+  body.innerHTML=MENU.map(c=>`<div class="mcourse"><div class="mchead"><span class="cz">${c.zh}</span><span class="ce">${c.en}</span><span class="ln"></span></div>`+
+    c.items.map(d=>`<div class="mdish"><div class="dz">${d.zh}</div><div class="de">${d.en}</div></div>`).join("")+`</div>`).join("");
+}
+function openMenu(){const m=document.getElementById("menuModal");if(m){m.classList.add("open");m.setAttribute("aria-hidden","false");}}
+function closeMenu(){const m=document.getElementById("menuModal");if(m){m.classList.remove("open");m.setAttribute("aria-hidden","true");}}
 function t(k){const v=I18N[k]; return v?v[LANG]:k;}
 function fillResult(item){
   $("greet").innerHTML = item.type==="table" ? t("searched") : `<b>${item.name}</b>${t("greetTail")}`;
@@ -586,6 +667,11 @@ $("replayBtn").onclick=()=>current&&animateRoute(current.no,true);
 $("backBtn").onclick=()=>{show("search");q.value="";sugg.classList.remove("show");q.focus();};
 $("langTog").onclick=()=>{LANG=LANG==="zh"?"en":"zh";try{localStorage.setItem("wsLang",LANG);}catch(e){}applyLang();};
 applyLang();
+renderMenu();
+$("menuFab").onclick=openMenu;
+$("menuClose").onclick=closeMenu;
+$("menuBackdrop").onclick=closeMenu;
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeMenu();});
 if(CONFIG.lineUrl&&CONFIG.lineUrl!=="__LINE"+"_URL__"){
   const b=$("lineBtn");b.href=CONFIG.lineUrl;b.style.display="inline-flex";
   const b2=$("lineBtnResult");if(b2){b2.href=CONFIG.lineUrl;b2.style.display="inline-flex";}
