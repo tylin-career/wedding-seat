@@ -225,7 +225,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
     <div class="walk" id="seatInfo" style="color:var(--gold);margin-top:4px"></div>
   </div>
   <div class="mapBox">
-    <svg id="map" viewBox="58 245 504 262" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="宴會廳平面圖與前往座位的路線"></svg>
+    <svg id="map" viewBox="58 245 504 308" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="宴會廳平面圖與前往座位的路線"></svg>
   </div>
   <div class="ctrls">
     <button class="btnPrimary" id="backBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg><span data-i18n="back">重新搜尋</span></button>
@@ -505,7 +505,7 @@ function roundedPathD(pts,r=5){
 /* ================= 地圖繪製 ================= */
 const SVGNS="http://www.w3.org/2000/svg";
 const map=document.getElementById("map");
-const FULL={x:58,y:245,w:504,h:262};
+const FULL={x:58,y:245,w:504,h:308};
 function el(tag,attrs,parent){const e=document.createElementNS(SVGNS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);(parent||map).appendChild(e);return e;}
 function drawBase(targetNo){
   map.innerHTML="";
@@ -526,8 +526,26 @@ function drawBase(targetNo){
   el("animate",{attributeName:"opacity",values:"0.85;0",dur:"1.7s",repeatCount:"indefinite"},ering);
   el("path",{d:"M150 470 L150 452 M144 458 L150 451 L156 458",stroke:"#F2C94C","stroke-width":2,fill:"none","stroke-linecap":"round","stroke-linejoin":"round"},eg);
   el("text",{x:150,y:482,"text-anchor":"middle","font-size":10,fill:"#F2C94C","font-weight":"700"},eg).textContent=t("entrance");
-  el("text",{x:208,y:481,"text-anchor":"middle","font-size":8.5,fill:"#8FA3D1"}).textContent=t("reception");
-  el("rect",{x:188,y:470,width:40,height:5,rx:2,fill:"none",stroke:"#4A5E8C","stroke-width":.8});
+  /* 迎賓區各項設施 */
+  const FAC=[
+    {t:"box",x:167,y:468,w:52,h:7, zh:"收禮桌",en:"Gifts",lx:193,ly:483},
+    {t:"box",x:223,y:461,w:23,h:6.5, zh:"喜餅桌",en:"Cookies",lx:234,ly:474},
+    {t:"box",x:160,y:487,w:17,h:8, zh:"桌次圖",en:"Seating",lx:168,ly:503},
+    {t:"box",x:112,y:485,w:14,h:8, zh:"婚紗照",en:"Photos",lx:118,ly:501},
+    {t:"vbar",x:90,y:470,w:6,h:52, zh:"婚佈佈置",en:"Decor",lx:85,ly:497,rot:1},
+    {t:"circ",pts:[[179.2,537.2],[175.6,527.9]],r:4, zh:"相本桌",en:"Guest book",lx:202,ly:539},
+    {t:"box",x:336,y:463,w:72,h:7, zh:"迎賓小點",en:"Refreshments",lx:372,ly:478},
+    {t:"circ",pts:[[311,495.8],[347.7,495.8],[390.8,495.8],[431.4,495.8]],r:4.4, zh:"",en:"",lx:0,ly:0},
+    {t:"box",x:499,y:462,w:9,h:33, zh:"拍拍印 · 點點酒",en:"Photo & Bar",lx:503,ly:507},
+    {t:"box",x:408,y:534,w:36,h:14, zh:"洗手間",en:"Restroom",lx:426,ly:544}
+  ];
+  FAC.forEach(f=>{
+    if(f.t==="box"||f.t==="vbar") el("rect",{x:f.x,y:f.y,width:f.w,height:f.h,rx:1.5,fill:"#22314E",stroke:"#55699A","stroke-width":.8});
+    if(f.t==="circ"||f.t==="mark") f.pts.forEach(p=>el("circle",{cx:p[0],cy:p[1],r:f.r,fill:"#22314E",stroke:"#55699A","stroke-width":.8}));
+    if(f.zh){const tx=el("text",{x:f.lx,y:f.ly,"text-anchor":"middle","font-size":7.5,fill:"#8FA3D1"});
+      tx.textContent=LANG==="en"?f.en:f.zh;
+      if(f.rot) tx.setAttribute("transform",`rotate(-90 ${f.lx} ${f.ly})`);}
+  });
   /* 桌子（依名單動態顯示） */
   const ACTIVE={}; TABLES.forEach(t=>ACTIVE[t.no]=t);
   for(const no in GEO.tables){
