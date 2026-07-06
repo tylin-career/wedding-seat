@@ -265,7 +265,8 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
 /* ================= 設定 ================= */
 const CONFIG = {
   lineUrl: "https://lin.ee/TLSvVsS",   // 婚禮官方 LINE 連結，留空則隱藏按鈕
-  mPerPt: 0.0858             // PDF pt → 公尺（依舞台 732cm 長邊與 180cm 標準圓桌驗證）
+  mPerPt: 0.0858,            // PDF pt → 公尺（依舞台 732cm 長邊與 180cm 標準圓桌驗證）
+  logUrl: "https://script.google.com/macros/s/AKfycby9qIIHbd8_uURKi7vkemRC_40dAhS-DvB8HByluBt6L_EbrKQAt3YnGHep3e4K-nje/exec"  // Google Apps Script 查詢紀錄
 };
 
 /* ================= 中英雙語 ================= */
@@ -374,6 +375,15 @@ function applyLang(){
   const ve=document.querySelector(".venue-en"); if(ve) ve.style.display=LANG==="en"?"none":"block";
   if(document.getElementById("viewResult").classList.contains("active")&&current){ fillResult(current); animateRoute(current.no,false,true); }
   if(document.getElementById("sugg").classList.contains("show")) render(search(q.value));
+}
+/* 查詢紀錄：每次選定賓客即送一筆到 Google Sheet（不阻塞、失敗不影響使用） */
+function logQuery(item){
+  if(!CONFIG.logUrl) return;
+  try{
+    fetch(CONFIG.logUrl,{method:"POST",mode:"no-cors",keepalive:true,
+      headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body:JSON.stringify({name:item.name,no:item.no,tname:item.tname,lang:LANG,type:item.type||"guest"})});
+  }catch(e){}
 }
 
 /* ================= 名單資料 ================= */
@@ -711,6 +721,7 @@ q.addEventListener("keydown",e=>{if(e.key==="Enter"){const r=search(q.value);if(
 function go(item){
   clearTimeout(autoT);
   current=item;
+  logQuery(item);
   fillResult(item);
   show("result");
   requestAnimationFrame(()=>animateRoute(item.no));
