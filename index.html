@@ -376,14 +376,29 @@ function applyLang(){
   if(document.getElementById("viewResult").classList.contains("active")&&current){ fillResult(current); animateRoute(current.no,false,true); }
   if(document.getElementById("sugg").classList.contains("show")) render(search(q.value));
 }
-/* 查詢紀錄：每次選定賓客即送一筆到 Google Sheet（不阻塞、失敗不影響使用） */
+/* 查詢紀錄：每次選定賓客即送一筆到 Google Sheet（不阻塞、失敗不影響使用）
+   先向免費 IP 服務取得公開 IP＋概略位置（城市/地區/國家/ISP，僅網路等級、非精準），
+   取不到就送空值；最多等 2.5 秒，確保不拖慢或漏記。 */
+function fetchGeo(){
+  const blank={ip:"",city:"",region:"",country:"",org:""};
+  const timeout=new Promise(res=>setTimeout(()=>res(blank),2500));
+  const tryGeo=fetch("https://ipapi.co/json/",{cache:"no-store"}).then(r=>r.json())
+    .then(j=>{ if(j&&j.ip&&!j.error) return {ip:j.ip,city:j.city||"",region:j.region||"",country:j.country_name||"",org:j.org||""}; throw 0; })
+    .catch(()=>fetch("https://ipwho.is/",{cache:"no-store"}).then(r=>r.json())
+      .then(j=>({ip:j.ip||"",city:j.city||"",region:j.region||"",country:j.country||"",org:(j.connection&&j.connection.isp)||""})))
+    .catch(()=>blank);
+  return Promise.race([tryGeo,timeout]);
+}
 function logQuery(item){
   if(!CONFIG.logUrl) return;
-  try{
-    fetch(CONFIG.logUrl,{method:"POST",mode:"no-cors",keepalive:true,
-      headers:{"Content-Type":"text/plain;charset=utf-8"},
-      body:JSON.stringify({name:item.name,no:item.no,tname:item.tname,lang:LANG,type:item.type||"guest"})});
-  }catch(e){}
+  fetchGeo().then(g=>{
+    try{
+      fetch(CONFIG.logUrl,{method:"POST",mode:"no-cors",keepalive:true,
+        headers:{"Content-Type":"text/plain;charset=utf-8"},
+        body:JSON.stringify({name:item.name,no:item.no,tname:item.tname,lang:LANG,
+          ip:g.ip,city:g.city,region:g.region,country:g.country,org:g.org})});
+    }catch(e){}
+  });
 }
 
 /* ================= 名單資料 ================= */
