@@ -147,6 +147,16 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
 .mdish .dz{color:var(--ink);font-size:14.5px}
 .mdish .de{color:#8FA3D1;font-size:11.5px;margin-top:1px}
 .menu-note{text-align:center;color:#7E89A8;font-size:11px;padding:16px 22px 26px;flex:none}
+.secttl{text-align:center;font-size:16px;font-weight:700;color:var(--gold);margin:6px 0 12px;letter-spacing:1px}
+.secttl.mt{margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+.gift-intro{text-align:center;font-size:14px;color:var(--ink);line-height:1.7;margin:6px 0 16px}
+.gift-card{background:#1D2C4F;border:1px solid var(--line);border-radius:14px;padding:13px 16px;margin-bottom:11px}
+.gift-card .gc-side{font-size:12.5px;font-weight:700;color:var(--gold);letter-spacing:.5px;margin-bottom:5px}
+.gift-card .gc-main{font-size:15px;color:var(--ink);line-height:1.6}
+.gift-card .gc-main b{font-weight:700}
+.gift-card .gc-tel{display:inline-flex;align-items:center;gap:6px;margin-top:9px;font-size:16px;font-weight:700;color:var(--gold);text-decoration:none}
+.gift-card.gc-help{border-color:var(--gold-deep);background:rgba(242,201,76,.06)}
+.gift-foot{text-align:center;color:var(--muted);font-size:12.5px;line-height:1.8;padding:8px 6px 22px}
 @media (min-width:560px){ .hero h1{font-size:44px} }
 </style>
 </head>
@@ -251,8 +261,8 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
     <div class="modal-grip"></div>
     <button class="modal-close" id="menuClose" aria-label="關閉 / Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="modal-head">
-      <div class="mtitle serif" data-i18n="menuTitle">宴會菜單</div>
-      <div class="msub">WEDDING MENU</div>
+      <div class="mtitle serif" data-i18n="menuTitle">資訊與菜單</div>
+      <div class="msub">INFO &amp; MENU</div>
     </div>
     <div class="modal-body" id="menuBody"></div>
     <div class="menu-note" data-i18n="menuNote">※ 菜色如有微調，以現場供應為準</div>
@@ -294,8 +304,8 @@ const I18N = {
   pickName:{zh:"請點選您的大名 ↓", en:"Tap your name ↓"},
   noMatch:{zh:"查無資料，請試試其他寫法，或洽入口收禮桌服務人員", en:"No match. Try another spelling, or ask our staff."},
   entrance:{zh:"入口", en:"Entrance"}, reception:{zh:"收禮桌", en:"Gifts"}, stage:{zh:"舞台", en:"Stage"}, spare:{zh:"備", en:"—"},
-  menuTitle:{zh:"宴會菜單", en:"Wedding Menu"}, menuNote:{zh:"※ 菜色如有微調，以現場供應為準", en:"Menu may vary slightly on the day"},
-  menuFab:{zh:"菜單", en:"Menu"}
+  menuTitle:{zh:"資訊與菜單", en:"Info & Menu"}, menuNote:{zh:"※ 菜色如有微調，以現場供應為準", en:"Menu may vary slightly on the day"},
+  menuFab:{zh:"資訊與菜單", en:"Info & Menu"}
 };
 const MENU=[
   {zh:"佐餐飲品",en:"Drinks",items:[
@@ -321,11 +331,27 @@ const MENU=[
 ];
 function renderMenu(){
   const body=document.getElementById("menuBody"); if(!body) return;
-  body.innerHTML=MENU.map(c=>`<div class="mcourse"><div class="mchead"><span class="cz">${c.zh}</span><span class="ce">${c.en}</span><span class="ln"></span></div>`+
+  const mh=LANG==="en"?"Wedding Menu":"宴會菜單";
+  body.innerHTML=giftHTML()+`<div class="secttl mt">${mh}</div>`+MENU.map(c=>`<div class="mcourse"><div class="mchead"><span class="cz">${c.zh}</span><span class="ce">${c.en}</span><span class="ln"></span></div>`+
     c.items.map(d=>`<div class="mdish"><div class="dz">${d.zh}</div><div class="de">${d.en}</div></div>`).join("")+`</div>`).join("");
 }
-function openMenu(){const m=document.getElementById("menuModal");if(m){m.classList.add("open");m.setAttribute("aria-hidden","false");}}
+function openMenu(){const m=document.getElementById("menuModal");if(m){renderMenu();m.classList.add("open");m.setAttribute("aria-hidden","false");}}
 function closeMenu(){const m=document.getElementById("menuModal");if(m){m.classList.remove("open");m.setAttribute("aria-hidden","true");}}
+/* 禮金代收 · 聯繫服務（收禮台暫停時的指引），併入「資訊與菜單」視窗上方 */
+function giftHTML(){
+  const ph='<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.5 21 3 13.5 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.2 2.2z"/></svg>';
+  const zh=`<div class="secttl">聯繫服務 · 禮金代收</div>`
+    +`<div class="gift-card gc-help"><div class="gc-side">婚禮總顧問</div><div class="gc-main"><b>Rainie</b> · 現場有任何問題歡迎聯繫</div><a class="gc-tel" href="tel:0903113009">${ph}0903-113-009</a></div>`
+    +`<p class="gift-intro">婚禮儀式進行時，收禮台暫停服務。<br>若欲致贈禮金，敬請依下列方式辦理：</p>`
+    +`<div class="gift-card"><div class="gc-side">男方親友 · 第 18 桌</div><div class="gc-main">交由 <b>張羽蓉女士</b>（鼎元小阿姨）代收</div><a class="gc-tel" href="tel:0975377586">${ph}0975-377-586</a></div>`
+    +`<div class="gift-card"><div class="gc-side">女方親友 · 第 3 桌</div><div class="gc-main">交由 <b>林雪如女士</b> 代收</div></div>`;
+  const en=`<div class="secttl">Contact &amp; Gift</div>`
+    +`<div class="gift-card gc-help"><div class="gc-side">Wedding Coordinator</div><div class="gc-main"><b>Rainie</b> · here to help on-site</div><a class="gc-tel" href="tel:0903113009">${ph}0903-113-009</a></div>`
+    +`<p class="gift-intro">The gift reception desk is paused during the ceremony.<br>To present a gift, please follow the options below:</p>`
+    +`<div class="gift-card"><div class="gc-side">Groom's guests · Table 18</div><div class="gc-main">Received by <b>Ms. Chang Yu-jung</b> (groom's aunt)</div><a class="gc-tel" href="tel:0975377586">${ph}0975-377-586</a></div>`
+    +`<div class="gift-card"><div class="gc-side">Bride's guests · Table 3</div><div class="gc-main">Received by <b>Ms. Lin Hsueh-ju</b></div></div>`;
+  return LANG==="en"?en:zh;
+}
 function initFab(){
   const fab=document.getElementById("menuFab"); if(!fab) return;
   const M=14, SZ=56;
